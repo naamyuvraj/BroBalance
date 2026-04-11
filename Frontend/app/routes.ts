@@ -5,6 +5,7 @@ export default [
   route("signup", "routes/signup.tsx"),
   route("oauth/callback", "routes/oauth.callback.tsx"),
   layout("routes/dashboard.tsx", [
+    route("dashboard/dashboard", "routes/dashboard.dashboard.tsx"),
     route("dashboard/profile", "routes/dashboard.profile.tsx"),
     route("dashboard/transactions", "routes/dashboard.transactions.tsx"),
     route("dashboard/friends", "routes/dashboard.friends.tsx"),
