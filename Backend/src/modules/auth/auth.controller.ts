@@ -12,7 +12,7 @@ class AuthController {
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 maxAge: 60 * 60 * 1000, // 1 hour
             });
-            res.redirect('http://localhost:5173');
+            res.redirect(`http://localhost:5173/oauth/callback?token=${result.token}`);
         } catch (error) {
             next(error);
         }
