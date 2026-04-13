@@ -4,8 +4,8 @@ import Login from "src/pages/auth/Login";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "BroBalance" },
+    { name: "description", content: "Welcome to BroBalance!" },
   ];
 }
 
