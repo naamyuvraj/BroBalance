@@ -1,15 +1,382 @@
 @import "tailwindcss";
 
-/* @theme {
+@theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-} */
 
-/* html, */
-/* body {
-  @apply bg-white dark:bg-gray-950;
+  --color-bg-primary: #0A0A0A;
+  --color-bg-card: #111111;
+  --color-bg-elevated: #161616;
+  --color-bg-hover: #1A1A1A;
+  --color-bg-active: #1F1F1F;
+  --color-border: #1E1E1E;
+  --color-border-subtle: #161616;
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+  --color-action-red: #F0655B;
+  --color-action-red-hover: #F87A72;
+  --color-action-red-glow: rgba(240, 101, 91, 0.15);
+
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-text-muted: rgba(255, 255, 255, 0.38);
+  --color-text-accent: #D63D33;
+
+  --color-success: #4ADE80;
+  --color-warning: #F59E0B;
+}
+
+html, body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography utility classes ────────────────────────── */
+
+/* A. Display / Hero — 48-56px, 700-800, leading-[1.1] */
+.typo-display {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+/* B. Primary financial data — 40-44px, 600, tabular-nums */
+.typo-financial {
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+.typo-financial-sm {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+/* C. Screen headers / Card titles — 18-20px, 500 */
+.typo-heading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+.typo-subheading {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+/* D. Body / Interactive — 14-16px, 400-600 */
+.typo-body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.typo-button {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+/* E. Microcopy / Secondary data — 11-13px, 400-500 */
+.typo-micro {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+.typo-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Ticker / Identifiers — uppercase, semi-bold, letter-spaced */
+.typo-ticker {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Tabular nums for any number display */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Glassmorphism ──────────────────────────────────────── */
+
+.glass {
+  background: rgba(14, 14, 14, 0.6);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.glass-strong {
+  background: rgba(12, 12, 12, 0.8);
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.glass-subtle {
+  background: rgba(14, 14, 14, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Glass card — dark, near-opaque, subtle edge glow */
+.glass-card {
+  background: rgba(14, 14, 14, 0.75);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.02) inset,
+    0 4px 24px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.04) inset,
+    0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Glass card — green accent (To Receive) */
+.glass-card-green {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.14) 0%, rgba(74, 222, 128, 0.04) 40%, rgba(14, 14, 14, 0.85) 100%);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  box-shadow:
+    0 0 0 0.5px rgba(74, 222, 128, 0.12) inset,
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 48px rgba(74, 222, 128, 0.12);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-card-green:hover {
+  border-color: rgba(74, 222, 128, 0.3);
+  box-shadow:
+    0 0 0 0.5px rgba(74, 222, 128, 0.12) inset,
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 64px rgba(74, 222, 128, 0.12);
+}
+
+/* Glass card — red accent (To Pay) */
+.glass-card-red {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.14) 0%, rgba(248, 113, 113, 0.04) 40%, rgba(14, 14, 14, 0.85) 100%);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  box-shadow:
+    0 0 0 0.5px rgba(248, 113, 113, 0.12) inset,
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 48px rgba(248, 113, 113, 0.12);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-card-red:hover {
+  border-color: rgba(248, 113, 113, 0.3);
+  box-shadow:
+    0 0 0 0.5px rgba(248, 113, 113, 0.12) inset,
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 64px rgba(248, 113, 113, 0.12);
+}
+
+/* Glass input fields */
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-input:focus {
+  border-color: rgba(240, 101, 91, 0.45);
+  box-shadow: 0 0 0 3px rgba(240, 101, 91, 0.1);
+  outline: none;
+}
+
+/* ── Gradient text ──────────────────────────────────────── */
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #F0655B 0%, #E04A40 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Background glow — directional top-left sweep ──────── */
+
+.bg-glow {
+  position: relative;
+  overflow: hidden;
+}
+.bg-glow::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 80%;
+  height: 80%;
+  background: conic-gradient(
+    from 180deg at 30% 40%,
+    rgba(240, 101, 91, 0.22) 0deg,
+    rgba(240, 101, 91, 0.10) 90deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  filter: blur(70px);
+  pointer-events: none;
+}
+.bg-glow::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  right: -15%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(240, 101, 91, 0.06) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Button styles ─────────────────────────────────────── */
+
+.btn-primary {
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(0, 0, 0, 0.15) 100%),
+    linear-gradient(135deg, #F47068, #F0655B 40%, #D44A40 100%);
+  color: white;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 160, 150, 0.3);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -1px 2px rgba(0, 0, 0, 0.2) inset,
+    0 4px 20px rgba(240, 101, 91, 0.4),
+    0 0 40px rgba(240, 101, 91, 0.15);
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 -1px 2px rgba(0, 0, 0, 0.25) inset,
+    0 8px 28px rgba(240, 101, 91, 0.5),
+    0 0 56px rgba(240, 101, 91, 0.2);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0.5px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.35) inset,
+    0 2px 10px rgba(240, 101, 91, 0.3);
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 -1px 1px rgba(0, 0, 0, 0.15) inset;
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 -1px 1px rgba(0, 0, 0, 0.2) inset,
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-0.5px);
+}
+.btn-outline:active {
+  transform: translateY(0.5px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.02) inset,
+    0 -1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* ── Scrollbar styling ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Modal animation */
+.animate-in {
+  animation: modal-in 0.2s ease-out;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
   }
-} */
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Fade-up animation for hero elements */
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out both;
+}
+.animate-fade-up-delay-1 { animation-delay: 0.1s; }
+.animate-fade-up-delay-2 { animation-delay: 0.2s; }
+.animate-fade-up-delay-3 { animation-delay: 0.3s; }
+.animate-fade-up-delay-4 { animation-delay: 0.4s; }
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Select dropdown styling for dark theme */
+select option {
+  background-color: #161616;
+  color: #F5F5F5;
+}
