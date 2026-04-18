@@ -36,7 +36,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
         .catch(() => {})
         .finally(() => setLoadingFriends(false));
     }
-    // Reset form when opening
+    // blank slate when modal opens
     if (open) {
       setFriendId("");
       setAmount("");
@@ -96,7 +96,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
           </div>
         )}
 
-        {/* Friend select */}
+        {/* pick a friend */}
         <div>
           <label className="block text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-2">
             Friend
@@ -122,7 +122,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
           )}
         </div>
 
-        {/* Type toggle */}
+        {/* lent or borrowed toggle */}
         <div>
           <label className="block text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-2">
             Type
@@ -155,7 +155,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
           </div>
         </div>
 
-        {/* Amount */}
+        {/* how much */}
         <div>
           <label className="block text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-2">
             Amount
@@ -174,7 +174,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
           </div>
         </div>
 
-        {/* Description */}
+        {/* what was it for */}
         <div>
           <label className="block text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-2">
             Description <span className="normal-case tracking-normal font-normal">(optional)</span>
@@ -188,7 +188,7 @@ export default function AddTransactionModal({ open, onClose, onCreated }: AddTra
           />
         </div>
 
-        {/* Submit */}
+        {/* send it */}
         <button
           type="submit"
           disabled={submitting}

@@ -32,7 +32,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-bg-primary bg-glow noise-overlay flex flex-col">
       <div className="relative z-10 flex-1 flex flex-col px-6 md:px-8 py-6 md:items-center md:justify-center">
-        {/* Top bar — logo left-aligned on mobile, centered on desktop */}
+        {/* logo */}
         <div className="flex items-center gap-2.5 mb-12 md:mb-10 md:justify-center animate-fade-up">
           <div className="h-10 w-10 rounded-2xl bg-action-red/12 border border-action-red/15 flex items-center justify-center">
             <span className="text-action-red font-bold text-lg">B</span>
@@ -40,7 +40,7 @@ export default function Login() {
           <span className="typo-heading text-lg font-semibold tracking-tight">BroBalance</span>
         </div>
 
-        {/* Hero text — left-aligned mobile, centered desktop */}
+        {/* big text */}
         <div className="md:text-center max-w-md mb-8">
           <h1 className="animate-fade-up animate-fade-up-delay-1" style={{ fontSize: 'clamp(2.5rem, 10vw, 3.5rem)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.03em' }}>
             <span className="text-gradient-red">Track</span>
@@ -58,7 +58,7 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Action buttons — pill-shaped like reference */}
+        {/* login / signup buttons */}
         <div className="flex items-center gap-3 mb-10 md:justify-center animate-fade-up animate-fade-up-delay-2">
           <button
             type="button"
@@ -75,7 +75,7 @@ export default function Login() {
           </a>
         </div>
 
-        {/* Preview cards — mimicking the crypto ticker cards from the reference */}
+        {/* preview cards showing what the app does */}
         <div className="grid grid-cols-2 gap-3 w-full max-w-sm md:mx-auto mb-10 animate-fade-up animate-fade-up-delay-3">
           <div className="glass-card rounded-2xl p-4">
             <div className="flex items-center justify-between mb-4">
@@ -109,7 +109,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Login form card */}
+        {/* the login form */}
         <div id="login-form" className="w-full max-w-sm md:mx-auto glass-card rounded-3xl p-6 animate-fade-up animate-fade-up-delay-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

@@ -37,7 +37,7 @@ export default function SignUp() {
   return (
     <div className="min-h-screen bg-bg-primary bg-glow noise-overlay flex flex-col">
       <div className="relative z-10 flex-1 flex flex-col px-6 md:px-8 py-6 md:items-center md:justify-center">
-        {/* Top bar — logo left-aligned mobile, centered desktop */}
+        {/* logo */}
         <div className="flex items-center gap-2.5 mb-10 md:justify-center animate-fade-up">
           <div className="h-10 w-10 rounded-2xl bg-action-red/12 border border-action-red/15 flex items-center justify-center">
             <span className="text-action-red font-bold text-lg">B</span>
@@ -45,7 +45,7 @@ export default function SignUp() {
           <span className="typo-heading text-lg font-semibold tracking-tight">BroBalance</span>
         </div>
 
-        {/* Heading — left-aligned mobile */}
+        {/* heading */}
         <div className="md:text-center max-w-sm mb-8 animate-fade-up animate-fade-up-delay-1">
           <h1 style={{ fontSize: 'clamp(2rem, 8vw, 2.75rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em' }}>
             <span className="text-gradient-red">Join</span>{" "}
@@ -56,7 +56,7 @@ export default function SignUp() {
           </p>
         </div>
 
-        {/* Sign-up card */}
+        {/* signup form */}
         <div className="w-full max-w-sm md:mx-auto glass-card rounded-3xl p-6 animate-fade-up animate-fade-up-delay-2">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

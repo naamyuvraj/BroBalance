@@ -24,12 +24,12 @@ export default function Modal({ open, onClose, title, children, wide }: ModalPro
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-      {/* Backdrop */}
+      {/* dark overlay */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      {/* Panel — centered glass card */}
+      {/* the actual modal box */}
       <div
         className={`relative w-full ${
           wide ? "max-w-lg" : "max-w-md"
@@ -38,7 +38,7 @@ export default function Modal({ open, onClose, title, children, wide }: ModalPro
           boxShadow: '0 0 0 0.5px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.08) inset, 0 8px 40px rgba(0,0,0,0.6), 0 0 80px rgba(240,101,91,0.04)',
         }}
       >
-        {/* Header */}
+        {/* title + close btn */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] shrink-0">
           <h2 className="text-lg font-light tracking-tight text-text-primary">
             {title}
@@ -52,7 +52,7 @@ export default function Modal({ open, onClose, title, children, wide }: ModalPro
             </svg>
           </button>
         </div>
-        {/* Body */}
+        {/* content goes here */}
         <div className="flex-1 overflow-y-auto px-5 py-5">{children}</div>
       </div>
     </div>

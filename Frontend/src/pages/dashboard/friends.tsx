@@ -30,22 +30,22 @@ export default function Friends() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // Friend profile modal
+  // when u click a friend to see their profile
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
   const [friendTransactions, setFriendTransactions] = useState<any[]>([]);
   const [loadingFriendTx, setLoadingFriendTx] = useState(false);
 
-  // New user search
+  // searching for new ppl to add
   const [userSearch, setUserSearch] = useState("");
   const [searchResults, setSearchResults] = useState<SearchedUser[]>([]);
   const [searching, setSearching] = useState(false);
   const [showUserSearch, setShowUserSearch] = useState(false);
 
-  // User profile popup
+  // popup when u tap on a search result
   const [selectedUser, setSelectedUser] = useState<SearchedUser | null>(null);
   const [sendingRequest, setSendingRequest] = useState(false);
 
-  // Pending requests
+  // friend requests waiting for response
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -83,7 +83,7 @@ export default function Friends() {
     setSelectedFriend(friend);
     setLoadingFriendTx(true);
 
-    // get transactions with this friend
+    // grab txns with this friend
     fetch(`${API}/transaction?friendId=${friend._id}`, { headers })
       .then((r) => r.json())
       .then((d) => {
@@ -166,7 +166,7 @@ export default function Friends() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* title + add button */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extralight tracking-tight text-text-primary">
@@ -189,13 +189,13 @@ export default function Friends() {
         </button>
       </div>
 
-      {/* Pending requests */}
+      {/* ppl who wanna be ur friend */}
       {pendingRequests.length > 0 && (
         <section>
           <h2 className="typo-subheading text-sm mb-3">
             Pending Requests ({pendingRequests.length})
           </h2>
-          <div className="space-y-2">
+          <div className="space-y-2 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
             {pendingRequests.map((req: any) => (
               <div
                 key={req._id}
@@ -236,22 +236,22 @@ export default function Friends() {
         </section>
       )}
 
-      {/* Search friends */}
+      {/* search bar */}
       <SearchBar
         value={search}
         onChange={setSearch}
         placeholder="Search your friends..."
       />
 
-      {/* Friends list */}
+      {/* the actual friend list */}
       {filteredFriends.length === 0 ? (
-        <div className="glass-card rounded-2xl p-10 flex flex-col items-center justify-center text-center">
-          <div className="h-16 w-16 rounded-2xl glass flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-text-muted/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+        <div className="glass-card rounded-2xl p-8 md:p-10 md:py-12 flex flex-col items-center justify-center text-center">
+          <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl glass flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-7 md:w-7 text-text-muted/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
             </svg>
           </div>
-          <p className="text-xl font-extralight text-text-muted/80 italic mb-2">
+          <p className="text-lg md:text-xl font-extralight text-text-muted/80 italic mb-1.5">
             {search ? "No matches found" : "\"Great things are never done alone\""}
           </p>
           <p className="typo-micro max-w-xs">
@@ -261,7 +261,7 @@ export default function Friends() {
           </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
           {filteredFriends.map((f) => (
             <FriendCard
               key={f._id}
@@ -275,7 +275,7 @@ export default function Friends() {
         </div>
       )}
 
-      {/* friend details modal */}
+      {/* friend profile popup */}
       <Modal
         open={!!selectedFriend}
         onClose={() => {
@@ -287,7 +287,7 @@ export default function Friends() {
       >
         {selectedFriend && (
           <div className="space-y-5">
-            {/* Friend info */}
+            {/* their pic + name */}
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center overflow-hidden shrink-0">
                 {selectedFriend.avatarUrl ? (
@@ -331,7 +331,7 @@ export default function Friends() {
 
             <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)' }} />
 
-            {/* Transactions with this friend */}
+            {/* txns between u and them */}
             <div>
               <h3 className="text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-3">Transactions</h3>
               {loadingFriendTx ? (
@@ -359,7 +359,7 @@ export default function Friends() {
         )}
       </Modal>
 
-      {/* find people modal */}
+      {/* search for new people modal */}
       <Modal
         open={showUserSearch}
         onClose={() => {
@@ -372,7 +372,7 @@ export default function Friends() {
       >
         {!selectedUser ? (
           <div className="space-y-4">
-            {/* Search input */}
+            {/* search box */}
             <div className="flex gap-2">
               <div className="flex-1">
                 <SearchBar
@@ -394,7 +394,7 @@ export default function Friends() {
               </button>
             </div>
 
-            {/* Results */}
+            {/* search results */}
             {searchResults.length > 0 ? (
               <div className="space-y-2">
                 {searchResults.map((user) => (
@@ -446,7 +446,7 @@ export default function Friends() {
               Back to results
             </button>
 
-            {/* Profile card */}
+            {/* their profile card */}
             <div className="flex flex-col items-center text-center">
               <div className="h-20 w-20 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center overflow-hidden mb-4" style={{ boxShadow: '0 0 20px rgba(240,101,91,0.08), 0 1px 0 rgba(255,255,255,0.04) inset' }}>
                 {selectedUser.avatarUrl ? (
@@ -463,7 +463,7 @@ export default function Friends() {
               <p className="typo-body">{selectedUser.email}</p>
             </div>
 
-            {/* Details */}
+            {/* extra info */}
             <div className="glass-card rounded-xl p-4 space-y-3">
               <DetailRow label="Email" value={selectedUser.email} />
               {selectedUser.mobileNumber && (
@@ -474,7 +474,7 @@ export default function Friends() {
               )}
             </div>
 
-            {/* Action button */}
+            {/* add/pending button */}
             {selectedUser.isFriend ? (
               <div className="text-center py-2">
                 <span className="inline-flex items-center gap-2 typo-body text-success font-medium">

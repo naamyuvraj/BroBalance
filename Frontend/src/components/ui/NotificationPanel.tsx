@@ -90,14 +90,14 @@ export default function NotificationPanel({ open, onClose, onUnreadCount }: Prop
       .catch(() => {});
   }, [token]);
 
-  // Poll unread count every 30s
+  // check for new notifs every 30s
   useEffect(() => {
     fetchUnreadCount();
     const interval = setInterval(fetchUnreadCount, 30000);
     return () => clearInterval(interval);
   }, [fetchUnreadCount]);
 
-  // Fetch full list when panel opens
+  // load all notifs when panel opens
   useEffect(() => {
     if (!open || !token) return;
     setLoading(true);
@@ -141,12 +141,12 @@ export default function NotificationPanel({ open, onClose, onUnreadCount }: Prop
 
   return (
     <>
-      {/* Backdrop */}
+      {/* dark bg behind */}
       <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Panel */}
+      {/* the panel itself */}
       <div className="fixed inset-x-0 top-0 z-50 max-h-[85vh] overflow-y-auto mx-3 mt-3 md:absolute md:right-0 md:left-auto md:w-96 md:mx-0 glass-card rounded-2xl border border-white/[0.08] animate-in slide-in-from-top-2">
-        {/* Header */}
+        {/* top bar */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-bg-primary/80 backdrop-blur-xl rounded-t-2xl">
           <h3 className="text-lg font-light tracking-tight text-text-primary">
             Notifi<span className="font-semibold">cations</span>
@@ -168,7 +168,7 @@ export default function NotificationPanel({ open, onClose, onUnreadCount }: Prop
           </div>
         </div>
 
-        {/* Body */}
+        {/* notif list */}
         <div className="px-3 py-3">
           {loading ? (
             <div className="flex items-center justify-center py-12">
@@ -219,12 +219,12 @@ function NotificationItem({ notification: n, onRead }: { notification: Notificat
         n.read ? "opacity-60" : "bg-white/[0.02] hover:bg-white/[0.04]"
       }`}
     >
-      {/* Icon */}
+      {/* notif icon */}
       <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${colors}`}>
         {icon}
       </div>
 
-      {/* Content */}
+      {/* notif text */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <p className={`text-sm leading-snug ${n.read ? "text-text-secondary" : "text-text-primary"}`}>

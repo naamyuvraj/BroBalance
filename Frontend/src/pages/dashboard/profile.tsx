@@ -58,7 +58,7 @@ export default function Profile() {
     Promise.all([fetchUser, fetchFriends]).finally(() => setLoading(false));
   }, [token]);
 
-  // Save changes
+  // save the edits
   const handleSave = async () => {
     setSaving(true);
     setError(null);
@@ -85,7 +85,7 @@ export default function Profile() {
     }
   };
 
-  // How complete is the profile
+  // how much of the profile is filled out
   const getCompletion = () => {
     if (!user) return 0;
     const fields = [user.username, user.email, user.avatarUrl, user.mobileNumber, user.instagramHandle];
@@ -93,7 +93,7 @@ export default function Profile() {
     return Math.round((filled / fields.length) * 100);
   };
 
-  // How long ago they joined
+  // when did they join
   const getMemberSince = () => {
     if (!user) return "";
     return new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -126,18 +126,18 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl md:max-w-3xl mx-auto space-y-6">
 
-      {/* Error banner */}
+      {/* error msg if something broke */}
       {error && (
         <div className="bg-red-500/10 border border-red-500/30 text-red-400 typo-body rounded-xl px-4 py-3">
           {error}
         </div>
       )}
 
-      {/* Header card — avatar + name */}
+      {/* profile pic + name card */}
       <div className="glass-card rounded-2xl p-6 flex flex-col items-center text-center">
-        {/* Avatar */}
+        {/* pfp */}
         <div className="relative mb-4">
           <div className="h-24 w-24 rounded-full bg-action-red/10 border-2 border-action-red/30 flex items-center justify-center overflow-hidden">
             {user.avatarUrl ? (
@@ -148,7 +148,7 @@ export default function Profile() {
               </span>
             )}
           </div>
-          {/* Verified badge */}
+          {/* lil checkmark */}
           {completion === 100 && (
             <div className="absolute -top-1 -left-1 h-7 w-7 rounded-full bg-success flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -158,13 +158,13 @@ export default function Profile() {
           )}
         </div>
 
-        {/* Name & role */}
+        {/* name + member since */}
         <h1 className="typo-heading text-xl font-bold">
           {user.username || "New User"}
         </h1>
         <p className="typo-micro mt-0.5">Member since {getMemberSince()}</p>
 
-        {/* Friends count */}
+        {/* how many friends */}
         <div className="mt-4 flex items-center gap-2 glass rounded-full px-4 py-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-action-red" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
@@ -173,7 +173,7 @@ export default function Profile() {
           <span className="typo-micro">friends</span>
         </div>
 
-        {/* Profile completion bar */}
+        {/* that progress bar showing profile completeness */}
         <div className="w-full max-w-xs mt-5">
           <div className="flex items-center justify-between mb-2">
             <span className="typo-label">Profile Completion</span>
@@ -188,7 +188,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Info / Edit card */}
+      {/* personal info / edit mode */}
       <div className="glass-card rounded-2xl p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="typo-subheading">Personal Information</h2>
@@ -257,14 +257,14 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Account card */}
+      {/* account details */}
       <div className="glass-card rounded-2xl p-6 space-y-3">
         <h2 className="typo-subheading mb-4">Account</h2>
         <AccountRow label="Login method" value={user.avatarUrl ? "Google" : "Email & Password"} />
         <AccountRow label="User ID" value={user._id} mono />
       </div>
 
-      {/* Logout button */}
+      {/* peace out button */}
       <button
         onClick={handleLogout}
         className="w-full flex items-center justify-center gap-3 glass-card rounded-2xl px-5 py-4 text-action-red hover:bg-action-red/10 hover:border-action-red/20 transition-all duration-200"

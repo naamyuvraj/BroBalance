@@ -9,7 +9,7 @@ const navItems = [
     label: "Dashboard",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
       </svg>
     ),
   },
@@ -48,11 +48,11 @@ export default function DashboardLayout() {
   const location = useLocation();
   const isDashboard = location.pathname === "/dashboard" || location.pathname === "/dashboard/dashboard";
 
-  // if navigated here with openAddTx state, open the modal
+  // if we got here with openAddTx, pop open the modal
   useEffect(() => {
     if ((location.state as any)?.openAddTx) {
       setShowAddTx(true);
-      // Clear the state so it doesn't re-trigger on back/forward
+      // clear it so it doesnt fire again on back/forward
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state]);
@@ -64,19 +64,19 @@ export default function DashboardLayout() {
 
   const sidebarContent = () => (
     <>
-      {/* Logo */}
+      {/* branding */}
       <div className="flex items-center gap-3 px-5 pt-6 pb-8">
         <span className="text-xl font-extralight tracking-tight text-text-primary">
           Bro<span className="font-semibold text-gradient-red">Balance</span>
         </span>
       </div>
 
-      {/* Nav label */}
+      {/* menu label */}
       <div className="px-5 mb-2">
         <span className="typo-label">Menu</span>
       </div>
 
-      {/* Nav items */}
+      {/* nav links */}
       <nav className="flex-1 flex flex-col gap-0.5 px-3">
         {navItems.map((item) => (
           <NavLink
@@ -105,7 +105,7 @@ export default function DashboardLayout() {
         ))}
       </nav>
 
-      {/* Bottom section */}
+      {/* logout at the bottom */}
       <div className="px-4 pb-5 pt-4 border-t border-white/[0.04]">
         <button onClick={handleLogout} className="flex items-center gap-3 w-full rounded-xl px-3 py-2.5 typo-body hover:text-action-red hover:bg-action-red/5 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -119,19 +119,19 @@ export default function DashboardLayout() {
 
   return (
     <div className="flex h-screen bg-bg-primary bg-glow text-text-primary font-sans">
-      {/* Desktop sidebar */}
+      {/* sidebar - only on bigger screens */}
       <aside className="hidden md:flex md:w-64 flex-col glass-strong border-r border-white/[0.06]">
         {sidebarContent()}
       </aside>
 
-      {/* Main area */}
+      {/* everything else */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Content */}
+        {/* page content */}
         <main className="flex-1 overflow-y-auto p-5 pt-6 pb-24 md:p-8 md:pb-8">
           <Outlet />
         </main>
 
-        {/* mobile bottom nav */}
+        {/* bottom nav for phones */}
         <nav className="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-30">
           <div className="flex items-center gap-2 glass-strong rounded-full px-3 py-2" style={{ boxShadow: '0 1px 0 rgba(255,255,255,0.08) inset, 0 -1px 2px rgba(0,0,0,0.25) inset, 0 8px 32px rgba(0,0,0,0.5)' }}>
             {navItems.map((item) => (
@@ -153,13 +153,13 @@ export default function DashboardLayout() {
         </nav>
       </div>
 
-      {/* fab button (hidden on dashboard) */}
+      {/* + button (not on dashboard tho) */}
       {!isDashboard && <FAB onClick={() => setShowAddTx(true)} />}
       <AddTransactionModal
         open={showAddTx}
         onClose={() => setShowAddTx(false)}
         onCreated={() => {
-          // Refresh the current page by navigating to the same route
+          // reload the page so new txn shows up
           navigate(".", { replace: true });
         }}
       />
