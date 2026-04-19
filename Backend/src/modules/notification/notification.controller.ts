@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+// import { Request, Response, NextFunction } from "express";
 import { NotificationService } from "./notification.service.js";
 
 export const NotificationController = {
   /** GET /api/notification */
-  async getAll(req: Request, res: Response, next: NextFunction) {
+  async getAll(req: any, res: any, next: any) {
     try {
       const userId = (req as any).user.id;
       const page = parseInt(req.query.page as string) || 1;
