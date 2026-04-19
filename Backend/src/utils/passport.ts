@@ -9,7 +9,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'http://localhost:8000/api/auth/google/callback',
+                callbackURL: 'https://w2mxl9h3-8000.inc1.devtunnels.ms/api/auth/google/callback',
                 proxy: true,
             },
             async (accessToken, refreshToken, profile, done) => {

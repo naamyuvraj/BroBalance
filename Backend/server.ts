@@ -10,7 +10,7 @@ import errorMiddleware from './src/middlewares/error.middleware.js';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://w2mxl9h3-5173.inc1.devtunnels.ms',
     credentials: true,
 }));
 app.use(express.json());

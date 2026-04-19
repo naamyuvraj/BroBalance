@@ -1,0 +1,26 @@
+import UserService from './user.service.js';
+
+const userService = new UserService();
+
+class UserController {
+    static async getMe(req: any, res: any, next: any) {
+        try {
+            const user = await userService.getMe(req.user.id);
+            res.json({ success: true, data: user });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async updateMe(req: any, res: any, next: any) {
+        try {
+            const { username, mobileNumber, instagramHandle } = req.body;
+            const user = await userService.updateMe(req.user.id, { username, mobileNumber, instagramHandle });
+            res.json({ success: true, data: user });
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
+export default UserController;
