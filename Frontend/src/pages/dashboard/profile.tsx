@@ -10,7 +10,7 @@ interface User {
   createdAt: string;
 }
 
-const API = "http://localhost:8000/api";
+const API = "https://w2mxl9h3-8000.inc1.devtunnels.ms/api";
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);

@@ -139,6 +139,22 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
+/* tone down blur on phones — biggest perf win */
+@media (max-width: 767px) {
+  .glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .glass-strong {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-subtle {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
 /* Glass card — dark, near-opaque, subtle edge glow */
 .glass-card {
   background: rgba(14, 14, 14, 0.75);
@@ -155,6 +171,17 @@ html, body {
   box-shadow:
     0 0 0 0.5px rgba(255, 255, 255, 0.04) inset,
     0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 767px) {
+  .glass-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+  .glass-card:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
 }
 
 /* Glass card — green accent (To Receive) */
@@ -177,6 +204,14 @@ html, body {
     0 0 64px rgba(74, 222, 128, 0.12);
 }
 
+@media (max-width: 767px) {
+  .glass-card-green {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 24px rgba(74, 222, 128, 0.08);
+  }
+}
+
 /* Glass card — red accent (To Pay) */
 .glass-card-red {
   background: linear-gradient(135deg, rgba(248, 113, 113, 0.14) 0%, rgba(248, 113, 113, 0.04) 40%, rgba(14, 14, 14, 0.85) 100%);
@@ -195,6 +230,14 @@ html, body {
     0 0 0 0.5px rgba(248, 113, 113, 0.12) inset,
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 0 64px rgba(248, 113, 113, 0.12);
+}
+
+@media (max-width: 767px) {
+  .glass-card-red {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 24px rgba(248, 113, 113, 0.08);
+  }
 }
 
 /* Glass input fields */
@@ -242,6 +285,8 @@ html, body {
   );
   filter: blur(70px);
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 .bg-glow::after {
   content: '';
@@ -253,6 +298,19 @@ html, body {
   background: radial-gradient(circle, rgba(240, 101, 91, 0.06) 0%, transparent 70%);
   filter: blur(60px);
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (max-width: 767px) {
+  .bg-glow::before {
+    filter: blur(40px);
+    opacity: 0.7;
+  }
+  .bg-glow::after {
+    filter: blur(30px);
+    opacity: 0.7;
+  }
 }
 
 /* Noise texture overlay */
@@ -282,7 +340,8 @@ html, body {
     0 -1px 2px rgba(0, 0, 0, 0.2) inset,
     0 4px 20px rgba(240, 101, 91, 0.4),
     0 0 40px rgba(240, 101, 91, 0.15);
-  transition: all 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  will-change: transform;
 }
 .btn-primary:hover {
   box-shadow:
@@ -308,7 +367,8 @@ html, body {
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.04) inset,
     0 -1px 1px rgba(0, 0, 0, 0.15) inset;
-  transition: all 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  will-change: transform;
 }
 .btn-outline:hover {
   background: rgba(255, 255, 255, 0.06);
@@ -379,4 +439,22 @@ html, body {
 select option {
   background-color: #161616;
   color: #F5F5F5;
+}
+
+/* kill heavy anims if user prefers it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* snappier animations on mobile */
+@media (max-width: 767px) {
+  .animate-fade-up {
+    animation-duration: 0.3s;
+  }
+  .animate-in {
+    animation-duration: 0.15s;
+  }
 }

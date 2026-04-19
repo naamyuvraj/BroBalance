@@ -121,7 +121,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="overflow-hidden">
+    <div>
       {/* phone layout */}
       <div className="flex flex-col md:hidden" style={{ minHeight: 'calc(100svh - 120px)' }}>
 
@@ -160,13 +160,14 @@ export default function Dashboard() {
             viewBox="0 0 400 400"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
           >
             <style>{`
               @keyframes jiggle {
-                0%, 100% { transform: translate(0, 0); }
-                25% { transform: translate(1.5px, -1px); }
-                50% { transform: translate(-1px, 1.5px); }
-                75% { transform: translate(1px, 1px); }
+                0%, 100% { transform: translate3d(0, 0, 0); }
+                25% { transform: translate3d(1.5px, -1px, 0); }
+                50% { transform: translate3d(-1px, 1.5px, 0); }
+                75% { transform: translate3d(1px, 1px, 0); }
               }
               .mesh-line { animation: jiggle 6s ease-in-out infinite; }
               .mesh-d1 { animation-delay: 0s; }
