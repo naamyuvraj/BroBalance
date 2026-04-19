@@ -1,4 +1,4 @@
-import mongoose,{Schema,Document} from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IFriend extends Document{
     userId: mongoose.Types.ObjectId;
@@ -18,4 +18,6 @@ const FriendSchema:Schema = new Schema<IFriend>({
 
 FriendSchema.index({ userId: 1, friendId: 1 }, { unique: true });
 
-export const Friend = mongoose.model<IFriend>('Friend', FriendSchema);
+const Friend = mongoose.model<IFriend>('Friend', FriendSchema);
+
+module.exports = { Friend };

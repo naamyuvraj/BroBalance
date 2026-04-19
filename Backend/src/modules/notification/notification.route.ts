@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { NotificationController } from "./notification.controller.js";
-import authMiddleware from "../../middlewares/auth.middleware.js";
+const { Router } = require('express');
+const { NotificationController } = require('./notification.controller');
+const authMiddleware = require('../../middlewares/auth.middleware');
 
 const router = Router();
 
@@ -13,4 +13,4 @@ router.patch("/read-all", NotificationController.markAllAsRead);
 router.patch("/:id/read", NotificationController.markAsRead);
 router.delete("/:id", NotificationController.delete);
 
-export default router;
+module.exports = router;

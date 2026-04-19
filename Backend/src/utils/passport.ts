@@ -1,7 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { User } from '../modules/user/user.model.js';
-import type { IUser } from '../modules/user/user.model.js';
+const { User } = require('../modules/user/user.model');
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     passport.use(
@@ -63,4 +62,4 @@ passport.deserializeUser(async (id: string, done) => {
     }
 });
 
-export default passport;
+module.exports = passport;

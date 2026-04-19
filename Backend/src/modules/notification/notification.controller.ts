@@ -1,9 +1,21 @@
-// import { Request, Response, NextFunction } from "express";
-import { NotificationService } from "./notification.service.js";
+// notification.controller.ts — express handlers for notifications
+//
+// BUG: the import below is commented out, so getUnreadCount, markAsRead,
+// markAllAsRead, and delete all fail because Request/Response/NextFunction
+// are undefined. getAll only works because it uses `any` types.
+//
+// FIX: uncomment the import and remove the `any` types from getAll too
+// or better yet, add proper types for all handlers
+//
+// once friend/transaction services are built, notifications will actually
+// have data to show. until then these work but return empty results.
 
-export const NotificationController = {
+import type { Request, Response, NextFunction } from 'express';
+const { NotificationService } = require('./notification.service');
+
+const NotificationController = {
   /** GET /api/notification */
-  async getAll(req: any, res: any, next: any) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
       const page = parseInt(req.query.page as string) || 1;
@@ -31,7 +43,7 @@ export const NotificationController = {
   async markAsRead(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
-      await NotificationService.markAsRead(req.params.id, userId);
+      await NotificationService.markAsRead(req.params.id as string, userId);
       res.json({ success: true, message: "Marked as read" });
     } catch (err) {
       next(err);
@@ -53,10 +65,12 @@ export const NotificationController = {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
-      await NotificationService.delete(req.params.id, userId);
+      await NotificationService.delete(req.params.id as string, userId);
       res.json({ success: true, message: "Notification deleted" });
     } catch (err) {
       next(err);
     }
   },
 };
+
+module.exports = { NotificationController };

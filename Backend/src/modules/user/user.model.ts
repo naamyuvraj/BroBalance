@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-import bcrypt from 'bcrypt';
+import mongoose, { Schema, Document } from 'mongoose';
+const bcrypt = require('bcrypt');
 
 export interface IUser extends Document {
     username: string;
@@ -36,4 +36,6 @@ UserSchema.pre('save', async function () {
     this.password = await bcrypt.hash(this.password as string, 10);
 });
 
-export const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model<IUser>('User', UserSchema);
+
+module.exports = { User };

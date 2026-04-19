@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface INotification extends Document {
   userId: mongoose.Types.ObjectId;      // who receives this notification
@@ -32,4 +32,6 @@ const NotificationSchema: Schema = new Schema<INotification>(
 // Index for fast "unread for user" queries
 NotificationSchema.index({ userId: 1, read: 1, createdAt: -1 });
 
-export const Notification = mongoose.model<INotification>("Notification", NotificationSchema);
+const Notification = mongoose.model<INotification>("Notification", NotificationSchema);
+
+module.exports = { Notification };

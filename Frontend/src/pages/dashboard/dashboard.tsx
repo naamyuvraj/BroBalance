@@ -4,7 +4,7 @@ import { TransactionCard, FriendCard } from "src/components/ui/Cards";
 import Loading from "src/components/ui/Loading";
 import NotificationPanel from "src/components/ui/NotificationPanel";
 
-const API = "http://localhost:8000/api";
+const API = "https://w2mxl9h3-8000.inc1.devtunnels.ms/api";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ totalFriends: 0, toReceive: 0, toPay: 0 });

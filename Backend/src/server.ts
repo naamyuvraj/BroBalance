@@ -1,11 +1,11 @@
-import './src/config/env.js';
-import express from 'express';
-import cors from 'cors';
-import session from 'express-session';
-import passport from './src/utils/passport.js';
-import { connectDB } from './src/config/db.js';
-import routes from './src/routes/index.js';
-import errorMiddleware from './src/middlewares/error.middleware.js';
+require('./config/env');
+const express = require('express');
+const cors = require('cors');
+const session = require('express-session');
+const passport = require('./utils/passport');
+const { connectDB } = require('./config/db');
+const routes = require('./routes/index');
+const errorMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
 

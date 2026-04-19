@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import AppError from '../utils/AppError.js';
+const jwt = require('jsonwebtoken');
+const AppError = require('../utils/AppError');
 
 const authMiddleware = (req:any, res:any, next:any) => {
     try {
@@ -20,4 +20,4 @@ const authMiddleware = (req:any, res:any, next:any) => {
     }
 };
 
-export default authMiddleware
+module.exports = authMiddleware

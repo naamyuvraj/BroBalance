@@ -1,4 +1,4 @@
-import UserService from './user.service.js';
+const UserService = require('./user.service');
 
 const userService = new UserService();
 
@@ -23,4 +23,4 @@ class UserController {
     }
 }
 
-export default UserController;
+module.exports = UserController;

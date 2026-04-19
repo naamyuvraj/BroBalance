@@ -1,8 +1,8 @@
-import express from 'express'
-import passport from '../../utils/passport.js'
-import AuthController from './auth.controller.js'
-import authMiddleware from '../../middlewares/auth.middleware.js'
-import { register, login } from '../../middlewares/validate.middleware.js'
+const express = require('express')
+const passport = require('../../utils/passport')
+const AuthController = require('./auth.controller')
+const authMiddleware = require('../../middlewares/auth.middleware')
+const { register, login } = require('../../middlewares/validate.middleware')
 
 const router = express.Router()
 
@@ -12,7 +12,7 @@ router.post('/logout', authMiddleware, AuthController.logout)
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', (req, res, next) => {
+router.get('/google/callback', (req: any, res: any, next: any) => {
     passport.authenticate('google', { session: false }, (err: any, user: any, info: any) => {
         if (err) {
             console.error('OAuth error:', err);
@@ -27,4 +27,4 @@ router.get('/google/callback', (req, res, next) => {
     })(req, res, next);
 });
 
-export default router
+module.exports = router

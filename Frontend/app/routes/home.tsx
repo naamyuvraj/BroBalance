@@ -1,14 +1,13 @@
 import type { Route } from "./+types/home";
-import  App  from "../welcome/welcome";
-import Login from "src/pages/auth/Login";
+import LandingPage from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "BroBalance" },
-    { name: "description", content: "Welcome to BroBalance!" },
+    { name: "description", content: "Split expenses, track balances, and settle up with friends." },
   ];
 }
 
 export default function Home() {
-  return <Login />;
+  return <LandingPage />;
 }

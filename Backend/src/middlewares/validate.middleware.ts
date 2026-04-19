@@ -1,5 +1,5 @@
-import { body, validationResult } from 'express-validator';
-import AppError from '../utils/AppError.js';
+const { body, validationResult } = require('express-validator');
+const AppError = require('../utils/AppError');
 
 const handleErrors = (req:any, res:any, next:any) => {
     const errors = validationResult(req);
@@ -21,4 +21,4 @@ const login = [
     handleErrors,
 ];
 
-export { register, login };
+module.exports = { register, login };

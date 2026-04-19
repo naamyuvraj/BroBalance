@@ -1,5 +1,18 @@
-import { Notification } from "./notification.model.js";
-import type { INotificationPayload } from "./notification.types.js";
+// notification.service.ts — all notification CRUD
+//
+// the model and types are done, the method signatures are right,
+// just need to uncomment the implementation code in each method.
+// literally just remove the // before each line and delete the dummy returns.
+//
+// the create() method is the most important one — its called by:
+//   - friend.service.ts → when someone sends/accepts a friend request
+//   - transaction.service.ts → when someone creates a transaction
+//   - reminder.service.ts → when a reminder fires
+//
+// hint: all the commented-out code below is correct, just uncomment it
+
+const { Notification } = require('./notification.model');
+import type { INotificationPayload } from './notification.types';
 
 /**
  * Create a notification for a user.
@@ -15,7 +28,7 @@ import type { INotificationPayload } from "./notification.types.js";
  *     metadata: { friendRequestId: request._id },
  *   });
  */
-export const NotificationService = {
+const NotificationService = {
   async create(userId: string, payload: INotificationPayload) {
     // TODO: Create the notification document in the database
     // const notification = await Notification.create({ userId, ...payload });
@@ -66,3 +79,5 @@ export const NotificationService = {
     // await Notification.findOneAndDelete({ _id: notificationId, userId });
   },
 };
+
+module.exports = { NotificationService };

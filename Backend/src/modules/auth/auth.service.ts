@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { User } from '../user/user.model.js';
-import AppError from '../../utils/AppError.js';
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { User } = require('../user/user.model');
+const AppError = require('../../utils/AppError');
 
 const generateToken = (user:any) => {
     const payload = {
@@ -33,4 +33,4 @@ class AuthService{
     }
 }
 
-export default AuthService
+module.exports = AuthService

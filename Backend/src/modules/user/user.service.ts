@@ -1,5 +1,5 @@
-import { User } from './user.model.js';
-import AppError from '../../utils/AppError.js';
+const { User } = require('./user.model');
+const AppError = require('../../utils/AppError');
 
 class UserService {
     async getMe(userId: string) {
@@ -15,4 +15,4 @@ class UserService {
     }
 }
 
-export default UserService;
+module.exports = UserService;

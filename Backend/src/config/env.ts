@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 
-export const env = {
+const env = {
     port: parseInt(process.env.PORT || '8000'),
     mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/brobalance',
     jwtSecret: process.env.JWT_SECRET || 'dev-jwt-secret',
@@ -10,3 +10,5 @@ export const env = {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     nodeEnv: process.env.NODE_ENV || 'development',
 };
+
+module.exports = { env };

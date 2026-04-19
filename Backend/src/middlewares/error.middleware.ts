@@ -1,4 +1,4 @@
-import AppError from '../utils/AppError.js';
+const AppError = require('../utils/AppError');
 
 const errorMiddleware = (err: any, req: any, res: any, next: any) => {
     if (err instanceof AppError) {
@@ -33,4 +33,4 @@ const errorMiddleware = (err: any, req: any, res: any, next: any) => {
     });
 };
 
-export default errorMiddleware;
+module.exports = errorMiddleware;
