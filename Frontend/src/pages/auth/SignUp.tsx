@@ -1,9 +1,12 @@
 import { useState } from "react";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -12,7 +15,7 @@ export default function SignUp() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
+      const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -31,7 +34,7 @@ export default function SignUp() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/api/auth/google";
+    window.location.href = `${API}/auth/google`;
   };
 
   return (

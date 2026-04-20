@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "src/components/ui/Modal";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 interface AddTransactionModalProps {
   open: boolean;

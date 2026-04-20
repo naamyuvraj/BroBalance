@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { FriendCard, TransactionCard } from "src/components/ui/Cards";
 import Loading from "src/components/ui/Loading";
 import Modal from "src/components/ui/Modal";
 import SearchBar from "src/components/ui/SearchBar";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 interface Friend {
   _id: string;
@@ -41,6 +42,10 @@ export default function Friends() {
   const [searching, setSearching] = useState(false);
   const [showUserSearch, setShowUserSearch] = useState(false);
 
+  const location = useLocation();
+  const navNavigate = useNavigate();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // popup when u tap on a search result
   const [selectedUser, setSelectedUser] = useState<SearchedUser | null>(null);
   const [sendingRequest, setSendingRequest] = useState(false);
@@ -59,6 +64,16 @@ export default function Friends() {
     fetchFriends();
     fetchPendingRequests();
   }, [token]);
+
+  // auto-open search modal when navigated with openSearch state
+  useEffect(() => {
+    if ((location.state as any)?.openSearch) {
+      setShowUserSearch(true);
+      setUserSearch("");
+      setSearchResults([]);
+      navNavigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   const fetchFriends = () => {
     fetch(`${API}/friend`, { headers })
@@ -93,18 +108,30 @@ export default function Friends() {
       .finally(() => setLoadingFriendTx(false));
   };
 
-  const handleUserSearch = () => {
-    if (!userSearch.trim()) return;
+  // debounced user search
+  useEffect(() => {
+    if (!userSearch.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
     setSearching(true);
 
-    fetch(`${API}/user/search?q=${encodeURIComponent(userSearch)}`, { headers })
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.success) setSearchResults(d.data);
-      })
-      .catch(() => {})
-      .finally(() => setSearching(false));
-  };
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      fetch(`${API}/user/search?q=${encodeURIComponent(userSearch)}`, { headers })
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.success) setSearchResults(d.data);
+        })
+        .catch(() => {})
+        .finally(() => setSearching(false));
+    }, 400);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [userSearch]);
 
   const handleSendRequest = (userId: string) => {
     setSendingRequest(true);
@@ -219,13 +246,13 @@ export default function Friends() {
                 <div className="flex gap-2 shrink-0">
                   <button
                     onClick={() => handleAcceptRequest(req._id)}
-                    className="btn-primary px-4 py-1.5 text-xs font-light tracking-wide"
+                    className="btn-primary px-4 py-2 text-sm font-light tracking-wide"
                   >
                     Accept
                   </button>
                   <button
                     onClick={() => handleDeclineRequest(req._id)}
-                    className="btn-outline px-4 py-1.5 text-xs font-light tracking-wide"
+                    className="btn-outline px-4 py-2 text-sm font-light tracking-wide"
                   >
                     Decline
                   </button>
@@ -373,26 +400,11 @@ export default function Friends() {
         {!selectedUser ? (
           <div className="space-y-4">
             {/* search box */}
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <SearchBar
-                  value={userSearch}
-                  onChange={setUserSearch}
-                  placeholder="Search by name or email..."
-                />
-              </div>
-              <button
-                onClick={handleUserSearch}
-                disabled={searching || !userSearch.trim()}
-                className="btn-primary px-5 py-2.5 text-sm font-light tracking-wide disabled:opacity-50 shrink-0"
-              >
-                {searching ? (
-                  <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  "Search"
-                )}
-              </button>
-            </div>
+            <SearchBar
+              value={userSearch}
+              onChange={setUserSearch}
+              placeholder="Search by name or email..."
+            />
 
             {/* search results */}
             {searchResults.length > 0 ? (

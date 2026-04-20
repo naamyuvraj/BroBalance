@@ -4,6 +4,7 @@ const UserController = require('./user.controller');
 
 const router = Router();
 
+router.get('/search', authMiddleware, UserController.searchUsers);
 router.get('/me', authMiddleware, UserController.getMe);
 router.put('/me', authMiddleware, UserController.updateMe);
 

@@ -4,7 +4,7 @@ import { TransactionCard, FriendCard } from "src/components/ui/Cards";
 import Loading from "src/components/ui/Loading";
 import NotificationPanel from "src/components/ui/NotificationPanel";
 
-const API = "https://w2mxl9h3-8000.inc1.devtunnels.ms/api";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ totalFriends: 0, toReceive: 0, toPay: 0 });
@@ -231,10 +231,10 @@ export default function Dashboard() {
             Add Now
           </button>
           <button
-            onClick={() => navigate("/dashboard/friends")}
+            onClick={() => navigate("/dashboard/friends", { state: { openSearch: true } })}
             className="btn-outline flex-1 py-3.5 text-[0.95rem] font-light tracking-wide"
           >
-            View Friends
+            Find Friends
           </button>
         </div>
 
@@ -269,10 +269,10 @@ export default function Dashboard() {
                 Add Now
               </button>
               <button
-                onClick={() => navigate("/dashboard/friends")}
+                onClick={() => navigate("/dashboard/friends", { state: { openSearch: true } })}
                 className="btn-outline px-6 py-2.5 text-sm font-light tracking-wide"
               >
-                View Friends
+                Find Friends
               </button>
             </div>
           </div>

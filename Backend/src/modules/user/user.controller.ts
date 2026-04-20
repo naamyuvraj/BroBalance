@@ -21,6 +21,16 @@ class UserController {
             next(error);
         }
     }
+
+    static async searchUsers(req: any, res: any, next: any) {
+        try {
+            const query = req.query.q as string;
+            const results = await userService.searchUsers(query || '');
+            res.json({ success: true, data: results });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = UserController;

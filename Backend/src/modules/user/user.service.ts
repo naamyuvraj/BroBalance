@@ -15,7 +15,8 @@ class UserService {
     }
     async searchUsers(query: string) {
         if (!query) return [];
-        const regex = new RegExp(query, 'i'); // case-insensitive search
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escaped, 'i');
         const users = await User.find({ username: regex }).select('username email avatarUrl');
         return users;
     }

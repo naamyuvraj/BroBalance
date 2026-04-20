@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TransactionCard } from "src/components/ui/Cards";
 import Loading from "src/components/ui/Loading";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 type FilterType = "all" | "lent" | "borrowed";
 
@@ -118,7 +118,7 @@ export default function Transactions() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-5 py-2 text-sm font-light tracking-wide rounded-full capitalize transition-all duration-200 ${
+            className={`flex-1 py-2.5 text-sm font-light tracking-wide rounded-full capitalize transition-all duration-200 ${
               filter === f ? "btn-primary" : "btn-outline"
             }`}
           >

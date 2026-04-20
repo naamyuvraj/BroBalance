@@ -6,7 +6,7 @@ export default function FAB({ onClick }: FABProps) {
   return (
     <button
       onClick={onClick}
-      className="btn-primary fixed bottom-20 right-6 md:bottom-8 md:right-8 z-50 h-14 w-14 flex items-center justify-center active:scale-95"
+      className="btn-primary fixed bottom-22 right-5 md:bottom-8 md:right-8 z-50 h-14 w-14 flex items-center justify-center active:scale-95"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

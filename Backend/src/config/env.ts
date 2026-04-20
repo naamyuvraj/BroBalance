@@ -11,6 +11,7 @@ const env = {
     nodeEnv: process.env.NODE_ENV || 'development',
     clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
     serverUrl: process.env.SERVER_URL || 'http://localhost:8000',
+    viteApiUrl: process.env.VITE_API_URL || 'http://localhost:8000/api',
 };
 
 module.exports = { env };

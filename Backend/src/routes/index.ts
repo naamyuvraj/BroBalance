@@ -7,7 +7,6 @@ const friendRoutes = require('../modules/friend/friend.route');
 const transactionRoutes = require('../modules/transaction/transaction.route');
 const authMiddleware = require('../middlewares/auth.middleware');
 const TransactionService = require('../modules/transaction/transaction.service');
-const UserService = require('../modules/user/user.service');
 
 const router = Router();
 
@@ -23,19 +22,6 @@ router.get('/dashboard/stats', authMiddleware, async (req: any, res: any, next: 
   try {
     const stats = await TransactionService.getStats(req.user.id);
     res.json({ success: true, data: stats });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get('/user/search', authMiddleware, async (req: any, res: any, next: any) => {
-  try {
-    const query = req.query.q;
-        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(escaped, 'i');
-
-    const results = await UserService.searchUsers(regex);
-    res.json({ success: true, data: results });
   } catch (error) {
     next(error);
   }

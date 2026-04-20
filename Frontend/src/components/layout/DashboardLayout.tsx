@@ -4,7 +4,7 @@ import FAB from "src/components/ui/FAB";
 import AddTransactionModal from "src/components/ui/AddTransactionModal";
 import TransactionRequestModal from "src/components/ui/TransactionRequestModal";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 const navItems = [
   {
@@ -40,6 +40,16 @@ const navItems = [
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+      </svg>
+    ),
+  },
+  {
+    to: "/dashboard/friends",
+    state: { openSearch: true },
+    label: "Search",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
     ),
   },
@@ -115,11 +125,12 @@ export default function DashboardLayout() {
       <nav className="flex-1 flex flex-col gap-0.5 px-3">
         {navItems.map((item) => (
           <NavLink
-            key={item.to}
+            key={item.label}
             to={item.to}
+            state={item.state}
             className={({ isActive }) =>
               `group flex items-center gap-3 rounded-xl px-3 py-2.5 typo-button transition-all duration-200 ${
-                isActive
+                isActive && !item.state
                   ? "bg-action-red/10 text-action-red"
                   : "text-text-secondary hover:bg-bg-hover hover:text-text-primary"
               }`
@@ -127,11 +138,11 @@ export default function DashboardLayout() {
           >
             {({ isActive }) => (
               <>
-                <span className={`transition-colors ${isActive ? "text-action-red" : "text-text-muted group-hover:text-text-secondary"}`}>
+                <span className={`transition-colors ${isActive && !item.state ? "text-action-red" : "text-text-muted group-hover:text-text-secondary"}`}>
                   {item.icon}
                 </span>
                 {item.label}
-                {isActive && (
+                {isActive && !item.state && (
                   <span className="ml-auto h-1.5 w-1.5 rounded-full bg-action-red" />
                 )}
               </>
@@ -160,22 +171,38 @@ export default function DashboardLayout() {
       </aside>
 
       {/* everything else */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 ">
+        {/* mobile top bar */}
+        {/* <header className="md:hidden flex items-center justify-between px-5 pt-5 pb-2 shrink-0">
+          <span className="text-lg font-extralight tracking-tight text-text-primary">
+            Bro<span className="font-semibold text-gradient-red">Balance</span>
+          </span>
+          <button
+            onClick={handleLogout}
+            className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-action-red/10 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+            </svg>
+          </button>
+        </header> */}
+
         {/* page content */}
-        <main className="flex-1 overflow-y-auto overflow-x-clip p-5 pt-6 pb-24 md:p-8 md:pb-8">
+        <main className="flex-1 overflow-y-auto overflow-x-clip p-5 pt-6 pb-24 md:p-8 md:pb-8 md:pt-8">
           <Outlet />
         </main>
 
         {/* bottom nav for phones */}
-        <nav className="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-30">
+        <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-30">
           <div className="flex items-center gap-2 glass-strong rounded-full px-3 py-2" style={{ boxShadow: '0 1px 0 rgba(255,255,255,0.08) inset, 0 -1px 2px rgba(0,0,0,0.25) inset, 0 8px 32px rgba(0,0,0,0.5)' }}>
             {navItems.map((item) => (
               <NavLink
-                key={item.to}
+                key={item.label}
                 to={item.to}
+                state={item.state}
                 className={({ isActive }) =>
                   `flex items-center justify-center h-10 w-10 rounded-full transition-all duration-200 ${
-                    isActive
+                    isActive && !item.state
                       ? "btn-primary"
                       : "text-text-muted hover:text-text-primary"
                   }`
@@ -195,7 +222,7 @@ export default function DashboardLayout() {
         onClose={() => setShowAddTx(false)}
         onCreated={() => {
           // reload the page so new txn shows up
-          navigate(".", { replace: true });
+          navigate(location.pathname, { replace: true });
         }}
       />
       <TransactionRequestModal

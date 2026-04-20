@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -7,7 +9,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://w2mxl9h3-8000.inc1.devtunnels.ms/api/auth/login", {
+      const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -26,7 +28,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://w2mxl9h3-8000.inc1.devtunnels.ms/api/auth/google";
+    window.location.href = `${API}/auth/google`;
   };
 
   return (

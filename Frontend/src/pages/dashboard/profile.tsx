@@ -10,7 +10,7 @@ interface User {
   createdAt: string;
 }
 
-const API = "https://w2mxl9h3-8000.inc1.devtunnels.ms/api";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);

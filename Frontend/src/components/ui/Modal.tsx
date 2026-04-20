@@ -33,7 +33,7 @@ export default function Modal({ open, onClose, title, children, wide }: ModalPro
       <div
         className={`relative w-full ${
           wide ? "max-w-lg" : "max-w-md"
-        } max-h-[85vh] flex flex-col glass-card rounded-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200`}
+        } max-h-[90vh] md:max-h-[85vh] flex flex-col glass-card rounded-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200`}
         style={{
           boxShadow: '0 0 0 0.5px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.08) inset, 0 8px 40px rgba(0,0,0,0.6), 0 0 80px rgba(240,101,91,0.04)',
         }}
