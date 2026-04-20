@@ -3,6 +3,7 @@ const passport = require('../../utils/passport')
 const AuthController = require('./auth.controller')
 const authMiddleware = require('../../middlewares/auth.middleware')
 const { register, login } = require('../../middlewares/validate.middleware')
+const { env } = require('../../config/env');
 
 const router = express.Router()
 
@@ -16,11 +17,11 @@ router.get('/google/callback', (req: any, res: any, next: any) => {
     passport.authenticate('google', { session: false }, (err: any, user: any, info: any) => {
         if (err) {
             console.error('OAuth error:', err);
-            return res.redirect('http://localhost:5173?error=oauth_error');
+            return res.redirect(`${env.clientUrl}?error=auth_failed`);
         }
         if (!user) {
             console.error('OAuth failed, no user. Info:', info);
-            return res.redirect('http://localhost:5173?error=auth_failed');
+            return res.redirect(`${env.clientUrl}?error=auth_failed`);
         }
         req.user = user;
         AuthController.googleCallback(req, res, next);

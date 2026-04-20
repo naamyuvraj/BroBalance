@@ -1,6 +1,8 @@
 const AuthService = require('./auth.service')
+const { env } = require('../../config/env');
 
 const authservice = new AuthService()
+
 
 class AuthController {
     static googleCallback(req: any, res: any, next: any) {
@@ -8,11 +10,11 @@ class AuthController {
             const result = authservice.generateToken(req.user);
             res.cookie('token', result.token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                secure: env.nodeEnv === 'production',
+                sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
                 maxAge: 60 * 60 * 1000, // 1 hour
             });
-            res.redirect(`https://w2mxl9h3-5173.inc1.devtunnels.ms/oauth/callback?token=${result.token}`);
+            res.redirect(`${env.clientUrl}/oauth/callback?token=${result.token}`);
         } catch (error) {
             next(error);
         }
@@ -37,8 +39,8 @@ class AuthController {
     }
     static async logout(req: any, res: any, next: any) {
         try {
-            // Implement logout logic here (e.g., destroy session)
-            // For demonstration, we'll just return a success message
+            const token = req.headers.authorization?.split(' ')[1];
+            await authservice.logout(token);
             res.json({ message: 'User logged out successfully' });
         } catch (error) {
             next(error);

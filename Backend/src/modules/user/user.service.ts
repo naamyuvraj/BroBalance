@@ -13,6 +13,12 @@ class UserService {
         if (!user) throw new AppError('User not found', 404);
         return user;
     }
+    async searchUsers(query: string) {
+        if (!query) return [];
+        const regex = new RegExp(query, 'i'); // case-insensitive search
+        const users = await User.find({ username: regex }).select('username email avatarUrl');
+        return users;
+    }
 }
 
 module.exports = UserService;

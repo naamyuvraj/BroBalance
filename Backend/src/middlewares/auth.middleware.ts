@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/AppError');
+const AuthService = require('../modules/auth/auth.service');
+const { env } = require('../config/env');
 
 const authMiddleware = (req:any, res:any, next:any) => {
     try {
@@ -9,7 +11,11 @@ const authMiddleware = (req:any, res:any, next:any) => {
         }
 
         const token = authHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-jwt-secret') as any;
+        const decoded = jwt.verify(token, env.jwtSecret) as any;
+        if (AuthService.isBlackListed(token)) {
+            throw new AppError('Token has been blacklisted. Please login again.', 401);
+        }
+
         req.user = { id: decoded.id };
         next();
     } catch (error:any) {

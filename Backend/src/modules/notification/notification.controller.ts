@@ -1,20 +1,7 @@
-// notification.controller.ts — express handlers for notifications
-//
-// BUG: the import below is commented out, so getUnreadCount, markAsRead,
-// markAllAsRead, and delete all fail because Request/Response/NextFunction
-// are undefined. getAll only works because it uses `any` types.
-//
-// FIX: uncomment the import and remove the `any` types from getAll too
-// or better yet, add proper types for all handlers
-//
-// once friend/transaction services are built, notifications will actually
-// have data to show. until then these work but return empty results.
-
 import type { Request, Response, NextFunction } from 'express';
 const { NotificationService } = require('./notification.service');
 
 const NotificationController = {
-  /** GET /api/notification */
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -28,7 +15,6 @@ const NotificationController = {
     }
   },
 
-  /** GET /api/notification/unread-count */
   async getUnreadCount(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -39,7 +25,6 @@ const NotificationController = {
     }
   },
 
-  /** PATCH /api/notification/:id/read */
   async markAsRead(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -50,7 +35,6 @@ const NotificationController = {
     }
   },
 
-  /** PATCH /api/notification/read-all */
   async markAllAsRead(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -61,7 +45,6 @@ const NotificationController = {
     }
   },
 
-  /** DELETE /api/notification/:id */
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;

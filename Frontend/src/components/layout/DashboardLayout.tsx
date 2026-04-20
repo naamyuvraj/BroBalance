@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router";
 import FAB from "src/components/ui/FAB";
 import AddTransactionModal from "src/components/ui/AddTransactionModal";
+import TransactionRequestModal from "src/components/ui/TransactionRequestModal";
+
+const API = "http://localhost:8000/api";
 
 const navItems = [
   {
@@ -44,9 +47,41 @@ const navItems = [
 
 export default function DashboardLayout() {
   const [showAddTx, setShowAddTx] = useState(false);
+  const [txRequestNotif, setTxRequestNotif] = useState<any>(null);
+  const [showTxRequest, setShowTxRequest] = useState(false);
+  const seenTxRequests = useRef<Set<string>>(new Set());
   const navigate = useNavigate();
   const location = useLocation();
   const isDashboard = location.pathname === "/dashboard" || location.pathname === "/dashboard/dashboard";
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers: Record<string, string> = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+
+  // poll for new transaction_request notifications every 30s
+  const checkForTxRequests = useCallback(() => {
+    if (!token) return;
+    fetch(`${API}/notification?limit=10`, { headers })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.success) return;
+        const notifs = d.data.notifications || [];
+        const newTxReq = notifs.find(
+          (n: any) => n.type === "transaction_request" && !n.read && !seenTxRequests.current.has(n._id)
+        );
+        if (newTxReq) {
+          seenTxRequests.current.add(newTxReq._id);
+          setTxRequestNotif(newTxReq);
+          setShowTxRequest(true);
+        }
+      })
+      .catch(() => {});
+  }, [token]);
+
+  useEffect(() => {
+    checkForTxRequests();
+    const interval = setInterval(checkForTxRequests, 30000);
+    return () => clearInterval(interval);
+  }, [checkForTxRequests]);
 
   // if we got here with openAddTx, pop open the modal
   useEffect(() => {
@@ -161,6 +196,21 @@ export default function DashboardLayout() {
         onCreated={() => {
           // reload the page so new txn shows up
           navigate(".", { replace: true });
+        }}
+      />
+      <TransactionRequestModal
+        open={showTxRequest}
+        notification={txRequestNotif}
+        onClose={() => setShowTxRequest(false)}
+        onAccept={() => {
+          if (txRequestNotif) {
+            fetch(`${API}/notification/${txRequestNotif._id}/read`, { method: "PATCH", headers }).catch(() => {});
+          }
+          setShowTxRequest(false);
+        }}
+        onViewTransaction={() => {
+          setShowTxRequest(false);
+          navigate("/dashboard/transactions");
         }}
       />
     </div>

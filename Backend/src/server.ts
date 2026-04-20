@@ -6,21 +6,22 @@ const passport = require('./utils/passport');
 const { connectDB } = require('./config/db');
 const routes = require('./routes/index');
 const errorMiddleware = require('./middlewares/error.middleware');
+const { env } = require('./config/env');
 
 const app = express();
 
 app.use(cors({
-    origin: 'https://w2mxl9h3-5173.inc1.devtunnels.ms',
+    origin: env.clientUrl,
     credentials: true,
 }));
 app.use(express.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'dev-secret-key',
+    secret: env.sessionSecret,
     resave: false,
     saveUninitialized: false,
     proxy: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: env.nodeEnv === 'production',
         sameSite: 'none',
         maxAge: 24 * 60 * 60 * 1000,
     },
@@ -37,7 +38,7 @@ app.get('/', (req: any, res: any) => {
 
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 8000;
+const PORT = env.port;
 
 connectDB().then(() => {
     app.listen(PORT, () => {

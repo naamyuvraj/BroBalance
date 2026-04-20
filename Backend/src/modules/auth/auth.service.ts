@@ -2,14 +2,16 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { User } = require('../user/user.model');
 const AppError = require('../../utils/AppError');
+const {env} =require('../../config/env')
 
 const generateToken = (user:any) => {
     const payload = {
         id: user._id,
         email: user.email,
     };
-    return jwt.sign(payload, process.env.JWT_SECRET || 'dev-jwt-secret', { expiresIn: '1h' });
+    return jwt.sign(payload, env.jwtSecret, { expiresIn: '1h' });
 }
+const blackListedTokens= new Set<string>() 
 
 class AuthService{
     generateToken(user:any){
@@ -28,8 +30,12 @@ class AuthService{
         const userObj = user.toJSON();
         return {user: userObj, token: generateToken(user)};
     }
-    async logout(){
+    async logout(token:string){
+        blackListedTokens.add(token);
         return { message: 'User logged out successfully' };
+    }
+    static isBlackListed(token:string){
+        return blackListedTokens.has(token);
     }
 }
 

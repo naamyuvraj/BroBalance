@@ -1,14 +1,15 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const { User } = require('../modules/user/user.model');
+const { env } = require('../config/env');
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+if (env.googleClientId && env.googleClientSecret) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'https://w2mxl9h3-8000.inc1.devtunnels.ms/api/auth/google/callback',
+                clientID: env.googleClientId,
+                clientSecret: env.googleClientSecret,
+                callbackURL: `${env.serverUrl}/api/auth/google/callback`,
                 proxy: true,
             },
             async (accessToken, refreshToken, profile, done) => {

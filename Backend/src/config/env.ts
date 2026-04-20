@@ -9,6 +9,8 @@ const env = {
     googleClientId: process.env.GOOGLE_CLIENT_ID || '',
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     nodeEnv: process.env.NODE_ENV || 'development',
+    clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+    serverUrl: process.env.SERVER_URL || 'http://localhost:8000',
 };
 
 module.exports = { env };

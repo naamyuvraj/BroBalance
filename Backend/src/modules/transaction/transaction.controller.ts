@@ -1,32 +1,55 @@
-// transaction.controller.ts — express handlers for transaction routes
-//
-// same pattern as user.controller.ts / friend.controller.ts
-//
-// handlers needed:
-//
-//   getAll(req, res, next)
-//     - reads req.query: { friendId?, type?, limit?, sort? }
-//     - calls service.getAll(req.user.id, filters)
-//     - returns { success: true, data: transactions }
-//
-//   create(req, res, next)
-//     - reads req.body: { friendId, amount, type, description }
-//     - calls service.create(req.user.id, req.body)
-//     - returns { success: true, data: transaction } with 201 status
-//
-//   markAsPaid(req, res, next)
-//     - reads req.params.id and optionally req.body.paidAmount
-//     - calls service.markAsPaid(req.params.id, req.user.id, paidAmount)
-//     - returns { success: true, message: 'Transaction updated' }
-//
-//   getStats(req, res, next)
-//     - calls service.getStats(req.user.id)
-//     - returns { success: true, data: { totalFriends, toReceive, toPay } }
-//     - note: totalFriends comes from Friend collection, not Transaction
-//       so either call FriendService or count here
-//
-// references:
-//   - user.controller.ts → pattern to follow
-//   - transaction.service.ts → the service methods
+const TransactionService = require('./transaction.service');
 
-// import TransactionService from './transaction.service.js';
+class TransactionController {
+    static async getAll(req: any, res: any, next: any) {
+        try {
+            const userId = req.user.id;
+            const filters = {
+                friendId: req.query.friendId,
+                type: req.query.type,
+                limit: parseInt(req.query.limit) || 0,
+                sort: req.query.sort || 'recent',
+            };
+            const transactions = await TransactionService.getAll(userId, filters);
+            res.json({ success: true, data: transactions });
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async create(req: any, res: any, next: any) {
+        try{
+            const userId=req.user.id;
+            const create ={
+                friendId:req.body.friendId,
+                amount:req.body.amount,
+                type:req.body.type,
+                description:req.body.description 
+            }
+            const transction = await TransactionService.create(userId,create)
+            res.status(201).json({success:true,data:transction})
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async markAsPaid(req: any, res: any, next: any) {
+        try{
+            const transactionId = req.params.id;
+            const userId = req.user.id;
+            const paidAmount = req.body.paidAmount;
+            await TransactionService.markAsPaid(transactionId, userId, paidAmount);
+            res.json({ success: true, message: 'Transaction updated' });
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async getStats(req: any, res: any, next: any) {
+        try{
+            const userId = req.user.id;
+            const stats = await TransactionService.getStats(userId);
+            res.json({ success: true, data: stats });
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+module.exports = TransactionController;
