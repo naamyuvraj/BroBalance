@@ -4,6 +4,16 @@ const { env } = require('../../config/env');
 const authservice = new AuthService()
 
 
+const appendAuthParams = (targetUrl: string, params: Record<string, string>) => {
+    const url = new URL(targetUrl);
+
+    Object.entries(params).forEach(([key, value]) => {
+        url.searchParams.set(key, value);
+    });
+
+    return url.toString();
+};
+
 class AuthController {
     static googleCallback(req: any, res: any, next: any) {
         try {
@@ -12,9 +22,10 @@ class AuthController {
                 httpOnly: true,
                 secure: env.nodeEnv === 'production',
                 sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
-                maxAge: 60 * 60 * 1000, // 1 hour
+                maxAge: 60 * 60 * 1000,
             });
-            res.redirect(`${env.clientUrl}/oauth/callback?token=${result.token}`);
+            const redirectUrl = res.locals.oauthRedirectUrl || `${env.clientUrl}/oauth/callback`;
+            res.redirect(appendAuthParams(redirectUrl, { token: result.token }));
         } catch (error) {
             next(error);
         }

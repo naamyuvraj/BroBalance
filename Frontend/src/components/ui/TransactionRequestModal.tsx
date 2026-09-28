@@ -25,7 +25,7 @@ export default function TransactionRequestModal({ open, notification, onClose, o
   return (
     <Modal open={open} onClose={onClose} title="Transaction Request">
       <div className="space-y-5">
-        {/* sender info */}
+        {}
         <div className="flex items-center gap-3">
           {sender?.avatarUrl ? (
             <img src={sender.avatarUrl} alt={sender.username} className="h-10 w-10 rounded-full object-cover" />
@@ -40,12 +40,12 @@ export default function TransactionRequestModal({ open, notification, onClose, o
           </div>
         </div>
 
-        {/* message */}
+        {}
         <div className="glass-card rounded-xl px-4 py-3">
           <p className="text-sm text-text-secondary">{notification.body}</p>
         </div>
 
-        {/* actions */}
+        {}
         <div className="flex gap-3">
           <button
             onClick={() => {

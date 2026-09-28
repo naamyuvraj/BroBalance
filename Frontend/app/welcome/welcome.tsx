@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 
-/* ── mesh grid bg for hero ── */
+
 function HeroMeshGrid() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.2]" aria-hidden="true">
@@ -16,7 +16,7 @@ function HeroMeshGrid() {
   );
 }
 
-/* ── contact modal — glass popup with emailjs ── */
+
 function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -27,8 +27,8 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (!formRef.current) return;
     setSending(true);
     try {
-      // emailjs — user must set these env vars:
-      // VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+     
+     
       const emailjs = await import("@emailjs/browser");
       await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "",
@@ -53,14 +53,14 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" onClick={onClose}>
-      {/* backdrop */}
+      {}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      {/* modal */}
+      {}
       <div
         className="relative glass-card rounded-3xl p-8 md:p-10 w-full max-w-md animate-in"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* close */}
+        {}
         <button onClick={onClose} className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
@@ -116,7 +116,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
 }
 
 
-/* ── how-it-works illustrations ── */
+
 
 function HIWAddFriend() {
   return (
@@ -222,7 +222,6 @@ function HIWSettle() {
 }
 
 
-// ── main page ──
 
 export default function LandingPage() {
   const howItWorksRef = useRef<HTMLDivElement>(null);
@@ -231,7 +230,7 @@ export default function LandingPage() {
   const [nlEmail, setNlEmail] = useState("");
   const [nlStatus, setNlStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
-  // track scroll to shrink navbar after hero
+ 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > window.innerHeight * 0.85);
@@ -248,7 +247,7 @@ export default function LandingPage() {
     });
   };
 
-  // newsletter subscribe → POST to our backend
+ 
   const handleNewsletter = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -295,10 +294,10 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary overflow-x-hidden">
 
-      {/* contact modal */}
+      {}
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
 
-      {/* ─── NAVBAR — shrinks to just Get Started after scroll ─── */}
+      {}
       <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-[90] w-auto">
         <div
           className={`nav-glass rounded-full flex items-center transition-all duration-500 ease-out ${
@@ -307,7 +306,7 @@ export default function LandingPage() {
               : "px-2 py-1.5 gap-1"
           }`}
         >
-          {/* logo — glowing, hides on scroll */}
+          {}
           <a
             href="/"
             className={`flex items-center transition-all duration-500 overflow-hidden ${
@@ -320,10 +319,10 @@ export default function LandingPage() {
             </span>
           </a>
 
-          {/* divider */}
+          {}
           <div className={`w-px h-5 bg-white/[0.08] hidden md:block transition-all duration-500 ${scrolled ? "opacity-0 w-0" : "opacity-100"}`} />
 
-          {/* nav links — hide on scroll */}
+          {}
           <div className={`hidden md:flex items-center transition-all duration-500 overflow-hidden ${scrolled ? "max-w-0 opacity-0" : "max-w-[400px] opacity-100"}`}>
             {["Features", "How it Works", "About"].map((label) => (
               <a
@@ -336,10 +335,10 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* divider */}
+          {}
           <div className={`w-px h-5 bg-white/[0.08] transition-all duration-500 ${scrolled ? "opacity-0 w-0" : "opacity-100"}`} />
 
-          {/* sign in — hide on scroll */}
+          {}
           <a
             href="/login"
             className={`rounded-full text-[13px] font-medium text-text-secondary hover:text-text-primary transition-all duration-500 whitespace-nowrap ${
@@ -349,7 +348,7 @@ export default function LandingPage() {
             Sign in
           </a>
 
-          {/* get started — always visible */}
+          {}
           <a
             href="/signup"
             className="btn-get-started px-5 py-2 rounded-full text-[13px] font-semibold text-white transition-all whitespace-nowrap"
@@ -360,7 +359,7 @@ export default function LandingPage() {
       </nav>
 
 
-      {/* ─── HERO ─── */}
+      {}
       <section className="relative min-h-[100vh] flex items-center px-6 bg-glow noise-overlay overflow-hidden">
         <HeroMeshGrid />
 
@@ -446,7 +445,7 @@ export default function LandingPage() {
 
       <div className="h-24 bg-gradient-to-b from-bg-primary via-bg-primary to-bg-card" />
 
-      {/* ─── FEATURES ─── */}
+      {}
       <section id="features" className="py-24 md:py-32 px-6 bg-bg-card">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
@@ -534,7 +533,7 @@ export default function LandingPage() {
 
       <div className="h-24 bg-gradient-to-b from-bg-card via-bg-primary to-bg-primary" />
 
-      {/* ─── HOW IT WORKS ─── */}
+      {}
       <section id="how-it-works" className="py-24 md:py-32 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -581,7 +580,7 @@ export default function LandingPage() {
 
       <div className="h-24 bg-gradient-to-b from-bg-primary via-bg-primary to-bg-card" />
 
-      {/* ─── QUOTE ─── */}
+      {}
       <section className="py-24 md:py-32 px-6 bg-bg-card">
         <div className="max-w-3xl mx-auto text-center">
           <div className="glass-card rounded-[2rem] p-12 md:p-16 relative overflow-hidden">
@@ -605,7 +604,7 @@ export default function LandingPage() {
 
       <div className="h-24 bg-gradient-to-b from-bg-card via-bg-primary to-bg-primary" />
 
-      {/* ─── ABOUT ─── */}
+      {}
       <section id="about" className="py-24 md:py-32 px-6">
         <div className="max-w-5xl mx-auto md:flex md:items-start md:gap-20">
           <div className="md:flex-1 mb-10 md:mb-0">
@@ -637,7 +636,7 @@ export default function LandingPage() {
 
       <div className="h-24 bg-gradient-to-b from-bg-primary via-bg-primary to-bg-card" />
 
-      {/* ─── FINAL CTA ─── */}
+      {}
       <section className="py-24 md:py-32 px-6 bg-bg-card">
         <div className="max-w-2xl mx-auto text-center">
           <h2 style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)", lineHeight: 1.05, letterSpacing: "-0.03em" }}>
@@ -661,12 +660,12 @@ export default function LandingPage() {
 
       <div className="h-16 bg-gradient-to-b from-bg-card to-bg-card" />
 
-      {/* ─── FOOTER ─── */}
+      {}
       <footer className="bg-bg-card border-t border-border">
         <div className="max-w-6xl mx-auto px-6 pt-16 pb-12">
           <div className="md:flex md:gap-16 lg:gap-24">
 
-            {/* newsletter */}
+            {}
             <div className="md:max-w-sm mb-12 md:mb-0">
               <p style={{ fontSize: "1.05rem", lineHeight: 1.5 }}>
                 <span className="font-light text-text-secondary">Join our newsletter to </span>
@@ -702,7 +701,7 @@ export default function LandingPage() {
                 By subscribing, you agree to our <a href="/privacy" className="underline hover:text-text-primary">Privacy Policy</a> and consent to receive updates.
               </p>
 
-              {/* socials — GitHub + Instagram only */}
+              {}
               <div className="flex items-center gap-3 mt-8">
                 <a href="#" className="h-9 w-9 rounded-full border border-white/[0.08] flex items-center justify-center text-text-muted hover:text-text-primary hover:border-white/20 transition-all" aria-label="GitHub">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
@@ -713,7 +712,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* link columns — no Twitter, no FAQ, Contact opens modal */}
+            {}
             <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-8">
               {[
                 { heading: "Sitemap", links: [{ label: "About Us", href: "#about" }, { label: "Features", href: "#features" }, { label: "How it Works", href: "#how-it-works" }] },
@@ -746,7 +745,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* giant wordmark */}
+        {}
         <div className="relative overflow-hidden px-6 pt-8 pb-4">
           <p className="text-center select-none leading-none" style={{ fontSize: "clamp(4rem, 20vw, 14rem)", letterSpacing: "-0.04em" }}>
             <span className="font-extralight text-action-red/40">Bro</span>
@@ -754,7 +753,7 @@ export default function LandingPage() {
           </p>
         </div>
 
-        {/* copyright */}
+        {}
         <div className="border-t border-white/[0.04] px-6 py-5">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="text-[11px] font-light text-text-muted">&copy; {new Date().getFullYear()} BroBalance. All rights reserved.</p>

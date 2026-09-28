@@ -12,6 +12,7 @@ const env = {
     clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
     serverUrl: process.env.SERVER_URL || 'http://localhost:8000',
     viteApiUrl: process.env.VITE_API_URL || 'http://localhost:8000/api',
+    mobileAppRedirectUrl: process.env.MOBILE_APP_REDIRECT_URL || 'brobalance://oauth/callback',
 };
 
 module.exports = { env };

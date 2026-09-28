@@ -31,12 +31,12 @@ export default function Friends() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // when u click a friend to see their profile
+ 
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
   const [friendTransactions, setFriendTransactions] = useState<any[]>([]);
   const [loadingFriendTx, setLoadingFriendTx] = useState(false);
 
-  // searching for new ppl to add
+ 
   const [userSearch, setUserSearch] = useState("");
   const [searchResults, setSearchResults] = useState<SearchedUser[]>([]);
   const [searching, setSearching] = useState(false);
@@ -46,11 +46,11 @@ export default function Friends() {
   const navNavigate = useNavigate();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // popup when u tap on a search result
+ 
   const [selectedUser, setSelectedUser] = useState<SearchedUser | null>(null);
   const [sendingRequest, setSendingRequest] = useState(false);
 
-  // friend requests waiting for response
+ 
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -65,7 +65,7 @@ export default function Friends() {
     fetchPendingRequests();
   }, [token]);
 
-  // auto-open search modal when navigated with openSearch state
+ 
   useEffect(() => {
     if ((location.state as any)?.openSearch) {
       setShowUserSearch(true);
@@ -98,7 +98,7 @@ export default function Friends() {
     setSelectedFriend(friend);
     setLoadingFriendTx(true);
 
-    // grab txns with this friend
+   
     fetch(`${API}/transaction?friendId=${friend._id}`, { headers })
       .then((r) => r.json())
       .then((d) => {
@@ -108,7 +108,7 @@ export default function Friends() {
       .finally(() => setLoadingFriendTx(false));
   };
 
-  // debounced user search
+ 
   useEffect(() => {
     if (!userSearch.trim()) {
       setSearchResults([]);
@@ -193,7 +193,7 @@ export default function Friends() {
 
   return (
     <div className="space-y-6">
-      {/* title + add button */}
+      {}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extralight tracking-tight text-text-primary">
@@ -216,7 +216,7 @@ export default function Friends() {
         </button>
       </div>
 
-      {/* ppl who wanna be ur friend */}
+      {}
       {pendingRequests.length > 0 && (
         <section>
           <h2 className="typo-subheading text-sm mb-3">
@@ -263,14 +263,14 @@ export default function Friends() {
         </section>
       )}
 
-      {/* search bar */}
+      {}
       <SearchBar
         value={search}
         onChange={setSearch}
         placeholder="Search your friends..."
       />
 
-      {/* the actual friend list */}
+      {}
       {filteredFriends.length === 0 ? (
         <div className="glass-card rounded-2xl p-8 md:p-10 md:py-12 flex flex-col items-center justify-center text-center">
           <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl glass flex items-center justify-center mb-4">
@@ -302,7 +302,7 @@ export default function Friends() {
         </div>
       )}
 
-      {/* friend profile popup */}
+      {}
       <Modal
         open={!!selectedFriend}
         onClose={() => {
@@ -314,7 +314,7 @@ export default function Friends() {
       >
         {selectedFriend && (
           <div className="space-y-5">
-            {/* their pic + name */}
+            {}
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center overflow-hidden shrink-0">
                 {selectedFriend.avatarUrl ? (
@@ -358,7 +358,7 @@ export default function Friends() {
 
             <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)' }} />
 
-            {/* txns between u and them */}
+            {}
             <div>
               <h3 className="text-[11px] uppercase tracking-widest font-semibold text-text-muted/50 mb-3">Transactions</h3>
               {loadingFriendTx ? (
@@ -386,7 +386,7 @@ export default function Friends() {
         )}
       </Modal>
 
-      {/* search for new people modal */}
+      {}
       <Modal
         open={showUserSearch}
         onClose={() => {
@@ -399,14 +399,14 @@ export default function Friends() {
       >
         {!selectedUser ? (
           <div className="space-y-4">
-            {/* search box */}
+            {}
             <SearchBar
               value={userSearch}
               onChange={setUserSearch}
               placeholder="Search by name or email..."
             />
 
-            {/* search results */}
+            {}
             {searchResults.length > 0 ? (
               <div className="space-y-2">
                 {searchResults.map((user) => (
@@ -446,7 +446,7 @@ export default function Friends() {
             )}
           </div>
         ) : (
-          /* User profile popup view */
+          
           <div className="space-y-5">
             <button
               onClick={() => setSelectedUser(null)}
@@ -458,7 +458,7 @@ export default function Friends() {
               Back to results
             </button>
 
-            {/* their profile card */}
+            {}
             <div className="flex flex-col items-center text-center">
               <div className="h-20 w-20 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center overflow-hidden mb-4" style={{ boxShadow: '0 0 20px rgba(240,101,91,0.08), 0 1px 0 rgba(255,255,255,0.04) inset' }}>
                 {selectedUser.avatarUrl ? (
@@ -475,7 +475,7 @@ export default function Friends() {
               <p className="typo-body">{selectedUser.email}</p>
             </div>
 
-            {/* extra info */}
+            {}
             <div className="glass-card rounded-xl p-4 space-y-3">
               <DetailRow label="Email" value={selectedUser.email} />
               {selectedUser.mobileNumber && (
@@ -486,7 +486,7 @@ export default function Friends() {
               )}
             </div>
 
-            {/* add/pending button */}
+            {}
             {selectedUser.isFriend ? (
               <div className="text-center py-2">
                 <span className="inline-flex items-center gap-2 typo-body text-success font-medium">

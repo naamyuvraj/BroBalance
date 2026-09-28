@@ -55,7 +55,7 @@ export default function Dashboard() {
 
   const net = stats.toReceive - stats.toPay;
 
-  // the green/red net bar thing at the bottom
+ 
   const netBar = (py: string) => (
     <div className={`${net >= 0 ? 'glass-card-green' : 'glass-card-red'} rounded-2xl px-4 ${py} flex items-center justify-between`}>
       <div className="flex items-center gap-3">
@@ -75,7 +75,7 @@ export default function Dashboard() {
     </div>
   );
 
-  // those two cards showing how much u owe / are owed
+ 
   const receiveCard = (p: string, amountSize: string, square = true) => (
     <div className={`glass-card-green rounded-2xl ${p} flex flex-col justify-between ${square ? 'aspect-square' : ''}`}>
       <div className="flex items-center justify-between">
@@ -122,10 +122,10 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/* phone layout */}
+      {}
       <div className="flex flex-col md:hidden" style={{ minHeight: 'calc(100svh - 120px)' }}>
 
-        {/* logo + notif bell */}
+        {}
         <div className="flex items-center justify-between shrink-0">
           <h2 className="text-2xl font-medium tracking-tight text-text-primary" style={{ textShadow: '0 0 20px rgba(240,101,91,0.4), 0 0 40px rgba(240,101,91,0.2)' }}>
             Bro<span className="font-bold text-gradient-red">Balance</span>
@@ -152,9 +152,9 @@ export default function Dashboard() {
           onUnreadCount={setUnreadCount}
         />
 
-        {/* big flashy hero */}
+        {}
         <div className="relative mt-12 overflow-hidden">
-          {/* that cool grid background */}
+          {}
           <svg
             className="absolute inset-0 w-full h-full opacity-[0.39]"
             viewBox="0 0 400 400"
@@ -177,7 +177,7 @@ export default function Dashboard() {
               .mesh-d5 { animation-delay: 1.2s; }
               .mesh-d6 { animation-delay: 1.5s; }
             `}</style>
-            {/* vertical lines */}
+            {}
             <line className="mesh-line mesh-d1" x1="50" y1="0" x2="50" y2="400" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d2" x1="100" y1="0" x2="100" y2="400" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d3" x1="150" y1="0" x2="150" y2="400" stroke="currentColor" strokeWidth="0.5" />
@@ -185,7 +185,7 @@ export default function Dashboard() {
             <line className="mesh-line mesh-d5" x1="250" y1="0" x2="250" y2="400" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d6" x1="300" y1="0" x2="300" y2="400" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d1" x1="350" y1="0" x2="350" y2="400" stroke="currentColor" strokeWidth="0.5" />
-            {/* horizontal lines */}
+            {}
             <line className="mesh-line mesh-d4" x1="0" y1="50" x2="400" y2="50" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d5" x1="0" y1="100" x2="400" y2="100" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d6" x1="0" y1="150" x2="400" y2="150" stroke="currentColor" strokeWidth="0.5" />
@@ -193,7 +193,7 @@ export default function Dashboard() {
             <line className="mesh-line mesh-d2" x1="0" y1="250" x2="400" y2="250" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d3" x1="0" y1="300" x2="400" y2="300" stroke="currentColor" strokeWidth="0.5" />
             <line className="mesh-line mesh-d4" x1="0" y1="350" x2="400" y2="350" stroke="currentColor" strokeWidth="0.5" />
-            {/* lil dots where lines cross */}
+            {}
             {[50,100,150,200,250,300,350].map((x, i) =>
               [50,100,150,200,250,300,350].map((y, j) => (
                 <circle key={`${i}-${j}`} className={`mesh-line mesh-d${((i+j)%6)+1}`} cx={x} cy={y} r="1.5" fill="currentColor" />
@@ -201,7 +201,7 @@ export default function Dashboard() {
             )}
           </svg>
 
-          {/* coin png floating on top */}
+          {}
           <img
             src="/coin.png"
             alt=""
@@ -216,13 +216,13 @@ export default function Dashboard() {
           </h1>
         </div>
 
-        {/* tagline */}
+        {}
         <p className="mt-5 text-[1.1rem] font-light leading-relaxed text-text-secondary/50">
           Split expenses with friends and track <br />
           <span className="text-text-secondary/80">every rupee effortlessly with transparency.</span>
         </p>
 
-        {/* action buttons */}
+        {}
         <div className="flex items-center gap-3 mt-5">
           <button
             onClick={() => navigate("/dashboard/transactions", { state: { openAddTx: true } })}
@@ -238,7 +238,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* money cards + net bar pushed to bottom */}
+        {}
         <div className="mt-auto pt-6 shrink-0">
           <div className="grid grid-cols-2 gap-4">
             {receiveCard("p-4", "text-[1.75rem]")}
@@ -248,11 +248,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* laptop/desktop layout */}
+      {}
       <div className="hidden md:block space-y-8">
-        {/* hero on left, money cards on right */}
+        {}
         <div className="flex gap-8 items-start">
-          {/* headline + buttons */}
+          {}
           <div className="flex-1 min-w-0">
             <h1 className="text-5xl lg:text-6xl tracking-tight text-text-primary leading-[1.08]">
               <span className="font-light text-gradient-red">Clarity</span> <span className="font-extrabold">in money</span>{" "}
@@ -277,17 +277,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* compact stat cards */}
+          {}
           <div className="w-72 lg:w-80 shrink-0 space-y-3">
             {receiveCard("p-4", "text-xl", false)}
             {payCard("p-4", "text-xl", false)}
           </div>
         </div>
 
-        {/* net bar stretches full width */}
+        {}
         {netBar("py-3")}
 
-        {/* recent stuff - friends left, txns right */}
+        {}
         <div className="grid grid-cols-2 gap-6">
           <section>
             <div className="flex items-center justify-between mb-3">

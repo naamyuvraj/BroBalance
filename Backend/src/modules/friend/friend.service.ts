@@ -6,12 +6,9 @@ const { NotificationService } = require('../notification/notification.service');
 const AppError = require('../../utils/AppError');
 
 class FriendService {
-  /**
-   * Calculate net balance between two users from transactions.
-   * Positive = they owe you, negative = you owe them.
-   */
+ 
   private static async calculateBalance(userId: string, friendId: string): Promise<number> {
-    // Transactions where user lent to friend (friend owes user)
+   
     const lentResult = await Transaction.aggregate([
       {
         $match: {
@@ -23,7 +20,7 @@ class FriendService {
       { $group: { _id: null, total: { $sum: { $subtract: ['$amount', '$paidAmount'] } } } },
     ]);
 
-    // Transactions where friend lent to user (user owes friend)
+   
     const borrowedResult = await Transaction.aggregate([
       {
         $match: {
@@ -41,10 +38,7 @@ class FriendService {
     return theyOweYou - youOweThem;
   }
 
-  /**
-   * Get all accepted friends for a user, with balance from transactions.
-   * Supports ?limit=N&sort=recent for the dashboard widget.
-   */
+ 
   static async getFriends(userId: string, limit = 0, sort = 'recent') {
     const query = Friend.find({
       $or: [{ userId }, { friendId: userId }],
@@ -77,9 +71,7 @@ class FriendService {
     return result;
   }
 
-  /**
-   * Get pending friend requests sent TO this user.
-   */
+ 
   static async getPendingRequests(userId: string) {
     const requests = await Friend.find({
       friendId: userId,
@@ -99,22 +91,19 @@ class FriendService {
     }));
   }
 
-  /**
-   * Send a friend request from one user to another.
-   * Throws if self-add, already friends, or request already pending.
-   */
+ 
   static async sendRequest(fromUserId: string, toUserId: string) {
     if (fromUserId === toUserId) {
       throw new AppError("You can't send a friend request to yourself", 400);
     }
 
-    // check target user exists
+   
     const targetUser = await User.findById(toUserId);
     if (!targetUser) {
       throw new AppError('User not found', 404);
     }
 
-    // check for existing relationship in either direction
+   
     const existing = await Friend.findOne({
       $or: [
         { userId: fromUserId, friendId: toUserId },
@@ -129,13 +118,13 @@ class FriendService {
       if (existing.status === 'pending') {
         throw new AppError('A friend request already exists', 400);
       }
-      // if status was 'rejected', allow re-sending by updating
+     
       existing.userId = new mongoose.Types.ObjectId(fromUserId);
       existing.friendId = new mongoose.Types.ObjectId(toUserId);
       existing.status = 'pending';
       await existing.save();
 
-      // notify target
+     
       const sender = await User.findById(fromUserId);
       await NotificationService.create(toUserId, {
         fromUserId,
@@ -148,14 +137,14 @@ class FriendService {
       return existing;
     }
 
-    // create new request
+   
     const request = await Friend.create({
       userId: fromUserId,
       friendId: toUserId,
       status: 'pending',
     });
 
-    // notify target
+   
     const sender = await User.findById(fromUserId);
     await NotificationService.create(toUserId, {
       fromUserId,
@@ -168,10 +157,7 @@ class FriendService {
     return request;
   }
 
-  /**
-   * Accept a pending friend request.
-   * Only the recipient (friendId) can accept.
-   */
+ 
   static async acceptRequest(requestId: string, userId: string) {
     const request = await Friend.findById(requestId);
     if (!request) {
@@ -189,7 +175,7 @@ class FriendService {
     request.status = 'accepted';
     await request.save();
 
-    // notify the original sender that their request was accepted
+   
     const accepter = await User.findById(userId);
     await NotificationService.create(request.userId.toString(), {
       fromUserId: userId,
@@ -202,10 +188,7 @@ class FriendService {
     return request;
   }
 
-  /**
-   * Decline a pending friend request.
-   * Only the recipient (friendId) can decline.
-   */
+ 
   static async declineRequest(requestId: string, userId: string) {
     const request = await Friend.findById(requestId);
     if (!request) {
@@ -226,10 +209,7 @@ class FriendService {
     return request;
   }
 
-  /**
-   * Remove a friend (unfriend). Either user can do this.
-   * Deletes the Friend document entirely.
-   */
+ 
   static async removeFriend(friendUserId: string, currentUserId: string) {
     const result = await Friend.findOneAndDelete({
       $or: [

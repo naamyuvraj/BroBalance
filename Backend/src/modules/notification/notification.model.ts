@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface INotification extends Document {
-  userId: mongoose.Types.ObjectId;      // who receives this notification
-  fromUserId: mongoose.Types.ObjectId;  // who triggered it
+  userId: mongoose.Types.ObjectId;     
+  fromUserId: mongoose.Types.ObjectId; 
   type: "friend_request" | "friend_accepted" | "transaction_request" | "transaction_paid" | "reminder" | "message";
   title: string;
   body: string;
-  metadata: Record<string, any>;        // flexible payload (friendRequestId, transactionId, etc.)
+  metadata: Record<string, any>;       
   read: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -29,7 +29,6 @@ const NotificationSchema: Schema = new Schema<INotification>(
   { timestamps: true }
 );
 
-// Index for fast "unread for user" queries
 NotificationSchema.index({ userId: 1, read: 1, createdAt: -1 });
 
 const Notification = mongoose.model<INotification>("Notification", NotificationSchema);

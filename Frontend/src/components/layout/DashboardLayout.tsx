@@ -67,7 +67,7 @@ export default function DashboardLayout() {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const headers: Record<string, string> = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
 
-  // poll for new transaction_request notifications every 30s
+ 
   const checkForTxRequests = useCallback(() => {
     if (!token) return;
     fetch(`${API}/notification?limit=10`, { headers })
@@ -93,11 +93,11 @@ export default function DashboardLayout() {
     return () => clearInterval(interval);
   }, [checkForTxRequests]);
 
-  // if we got here with openAddTx, pop open the modal
+ 
   useEffect(() => {
     if ((location.state as any)?.openAddTx) {
       setShowAddTx(true);
-      // clear it so it doesnt fire again on back/forward
+     
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state]);
@@ -109,19 +109,19 @@ export default function DashboardLayout() {
 
   const sidebarContent = () => (
     <>
-      {/* branding */}
+      {}
       <div className="flex items-center gap-3 px-5 pt-6 pb-8">
         <span className="text-xl font-extralight tracking-tight text-text-primary">
           Bro<span className="font-semibold text-gradient-red">Balance</span>
         </span>
       </div>
 
-      {/* menu label */}
+      {}
       <div className="px-5 mb-2">
         <span className="typo-label">Menu</span>
       </div>
 
-      {/* nav links */}
+      {}
       <nav className="flex-1 flex flex-col gap-0.5 px-3">
         {navItems.map((item) => (
           <NavLink
@@ -151,7 +151,7 @@ export default function DashboardLayout() {
         ))}
       </nav>
 
-      {/* logout at the bottom */}
+      {}
       <div className="px-4 pb-5 pt-4 border-t border-white/[0.04]">
         <button onClick={handleLogout} className="flex items-center gap-3 w-full rounded-xl px-3 py-2.5 typo-body hover:text-action-red hover:bg-action-red/5 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -165,34 +165,22 @@ export default function DashboardLayout() {
 
   return (
     <div className="flex h-screen bg-bg-primary bg-glow text-text-primary font-sans">
-      {/* sidebar - only on bigger screens */}
+      {}
       <aside className="hidden md:flex md:w-64 flex-col glass-strong border-r border-white/[0.06]">
         {sidebarContent()}
       </aside>
 
-      {/* everything else */}
+      {}
       <div className="flex-1 flex flex-col min-w-0 ">
-        {/* mobile top bar */}
-        {/* <header className="md:hidden flex items-center justify-between px-5 pt-5 pb-2 shrink-0">
-          <span className="text-lg font-extralight tracking-tight text-text-primary">
-            Bro<span className="font-semibold text-gradient-red">Balance</span>
-          </span>
-          <button
-            onClick={handleLogout}
-            className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-action-red/10 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-            </svg>
-          </button>
-        </header> */}
+        {}
+        {}
 
-        {/* page content */}
+        {}
         <main className="flex-1 overflow-y-auto overflow-x-clip p-5 pt-6 pb-24 md:p-8 md:pb-8 md:pt-8">
           <Outlet />
         </main>
 
-        {/* bottom nav for phones */}
+        {}
         <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-30">
           <div className="flex items-center gap-2 glass-strong rounded-full px-3 py-2" style={{ boxShadow: '0 1px 0 rgba(255,255,255,0.08) inset, 0 -1px 2px rgba(0,0,0,0.25) inset, 0 8px 32px rgba(0,0,0,0.5)' }}>
             {navItems.map((item) => (
@@ -215,13 +203,13 @@ export default function DashboardLayout() {
         </nav>
       </div>
 
-      {/* + button (not on dashboard tho) */}
+      {}
       {!isDashboard && <FAB onClick={() => setShowAddTx(true)} />}
       <AddTransactionModal
         open={showAddTx}
         onClose={() => setShowAddTx(false)}
         onCreated={() => {
-          // reload the page so new txn shows up
+         
           navigate(location.pathname, { replace: true });
         }}
       />

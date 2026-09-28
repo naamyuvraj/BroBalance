@@ -8,7 +8,7 @@ const errorMiddleware = (err: any, req: any, res: any, next: any) => {
         });
     }
 
-    // Mongoose duplicate key error
+   
     if (err.code === 11000) {
         const field = Object.keys(err.keyValue)[0];
         return res.status(409).json({
@@ -17,7 +17,7 @@ const errorMiddleware = (err: any, req: any, res: any, next: any) => {
         });
     }
 
-    // Mongoose validation error
+   
     if (err.name === 'ValidationError') {
         const messages = Object.values(err.errors).map((e: any) => e.message).join('. ');
         return res.status(400).json({

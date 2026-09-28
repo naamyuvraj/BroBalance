@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Brobalance</string>
+    <string name="title_activity_main">Brobalance</string>
+    <string name="package_name">com.yuvraj.brobalance</string>
+    <string name="custom_url_scheme">brobalance</string>
+</resources>

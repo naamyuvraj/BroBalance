@@ -11,7 +11,7 @@ const { env } = require('./config/env');
 const app = express();
 
 app.use(cors({
-    origin: env.clientUrl,
+    origin: [env.clientUrl, 'http://localhost:5173', 'https://brobalance.vercel.app'].filter(Boolean),
     credentials: true,
 }));
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(session({
     proxy: true,
     cookie: {
         secure: env.nodeEnv === 'production',
-        sameSite: 'none',
+        sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000,
     },
 }));

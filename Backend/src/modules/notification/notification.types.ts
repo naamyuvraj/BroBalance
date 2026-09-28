@@ -11,5 +11,5 @@ export interface INotificationPayload {
   type: NotificationType;
   title: string;
   body: string;
-  metadata?: Record<string, any>; // e.g. { friendRequestId, transactionId, etc. }
+  metadata?: Record<string, any>;
 }

@@ -5,10 +5,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigate,
 } from "react-router";
+import { useEffect } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { handleOAuthCallbackUrl, isMobileApp } from "src/utils/oauth";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,6 +45,49 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isMobileApp()) return;
+
+    let isMounted = true;
+    let appListener: { remove: () => Promise<void> } | undefined;
+
+    const processUrl = (url: string) => {
+      if (!isMounted) return;
+
+      const result = handleOAuthCallbackUrl(url);
+      if (!result) return;
+
+     
+      void import("@capacitor/browser").then(({ Browser }) => Browser.close()).catch(() => {});
+
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        navigate("/dashboard/profile", { replace: true });
+        return;
+      }
+
+      navigate("/?error=oauth_failed", { replace: true });
+    };
+
+    void import("@capacitor/app").then(async ({ App }) => {
+      const launchUrl = await App.getLaunchUrl();
+      if (launchUrl?.url) {
+        processUrl(launchUrl.url);
+      }
+
+      appListener = await App.addListener("appUrlOpen", ({ url }) => {
+        processUrl(url);
+      });
+    }).catch(() => {});
+
+    return () => {
+      isMounted = false;
+      void appListener?.remove();
+    };
+  }, [navigate]);
+
   return <Outlet />;
 }
 

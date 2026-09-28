@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 const newsletterService = require('./newsletter.service');
 
-// POST /api/newsletter/subscribe
 const subscribe = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email } = req.body;
@@ -9,7 +8,7 @@ const subscribe = async (req: Request, res: Response, next: NextFunction) => {
       res.status(400).json({ success: false, message: 'Email is required' });
       return;
     }
-    // basic email format check
+   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       res.status(400).json({ success: false, message: 'Invalid email format' });
@@ -22,7 +21,6 @@ const subscribe = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// POST /api/newsletter/unsubscribe
 const unsubscribe = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email } = req.body;
@@ -37,7 +35,6 @@ const unsubscribe = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// GET /api/newsletter/subscribers
 const getSubscribers = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const subscribers = await newsletterService.getActiveSubscribers();

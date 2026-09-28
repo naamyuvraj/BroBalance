@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 const FriendService = require('./friend.service');
 
 class FriendController {
-  /** GET /api/friend — list accepted friends with balances */
+  
   static async getFriends(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -16,7 +16,7 @@ class FriendController {
     }
   }
 
-  /** GET /api/friend/requests/pending — pending requests sent to this user */
+  
   static async getPendingRequests(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -27,7 +27,7 @@ class FriendController {
     }
   }
 
-  /** POST /api/friend/request — send a friend request */
+  
   static async sendRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -38,7 +38,7 @@ class FriendController {
     }
   }
 
-  /** POST /api/friend/request/:id/accept — accept a pending request */
+  
   static async acceptRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -49,7 +49,7 @@ class FriendController {
     }
   }
 
-  /** POST /api/friend/request/:id/decline — decline a pending request */
+  
   static async declineRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
@@ -60,7 +60,7 @@ class FriendController {
     }
   }
 
-  /** DELETE /api/friend/:id — remove a friend */
+  
   static async removeFriend(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;

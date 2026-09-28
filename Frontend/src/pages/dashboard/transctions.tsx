@@ -49,7 +49,7 @@ export default function Transactions() {
 
   return (
     <div className="space-y-5">
-      {/* page title */}
+      {}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extralight tracking-tight text-text-primary">
@@ -57,7 +57,7 @@ export default function Transactions() {
           </h1>
           <p className="typo-body mt-1">All your debts and payments</p>
         </div>
-        {/* filter pills - only show here on desktop */}
+        {}
         <div className="hidden md:flex gap-2">
           {(["all", "lent", "borrowed"] as FilterType[]).map((f) => (
             <button
@@ -73,7 +73,7 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* lent / borrowed / net cards */}
+      {}
       <div className="grid grid-cols-3 gap-2 md:gap-3">
         <div className="glass-card-green rounded-2xl px-3 py-3 flex flex-col items-center gap-1.5 md:flex-row md:items-center md:gap-3 md:px-4 md:py-3">
           <div className="h-8 w-8 rounded-full bg-success/10 flex items-center justify-center shrink-0">
@@ -112,7 +112,7 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* filter pills - phone only */}
+      {}
       <div className="flex gap-2 md:hidden">
         {(["all", "lent", "borrowed"] as FilterType[]).map((f) => (
           <button
@@ -127,7 +127,7 @@ export default function Transactions() {
         ))}
       </div>
 
-      {/* show txns or the empty state */}
+      {}
       {filtered.length === 0 ? (
         <div className="glass-card rounded-2xl p-8 md:p-10 md:py-12 flex flex-col items-center justify-center text-center">
           <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl glass flex items-center justify-center mb-4">
