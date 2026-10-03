@@ -93,19 +93,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         right: 24,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF09120C),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+        color: const Color(0xFF141414),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         border: Border.all(
-          color: AppColors.neonGreen.withOpacity(0.25),
+          color: Colors.white.withOpacity(0.08),
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.6),
-            blurRadius: 32,
-            offset: const Offset(0, -8),
-          ),
-        ],
       ),
       child: SingleChildScrollView(
         child: Form(
@@ -122,9 +115,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                     'Record Expense',
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: -0.5,
                     ),
                   ),
                   IconButton(
@@ -161,11 +153,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
                             color: _type == 'lent'
-                                ? AppColors.neonGreen.withOpacity(0.18)
+                                ? AppColors.successGreen.withOpacity(0.18)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(20),
                             border: _type == 'lent'
-                                ? Border.all(color: AppColors.neonGreen.withOpacity(0.4))
+                                ? Border.all(color: AppColors.successGreen.withOpacity(0.4))
                                 : Border.all(color: Colors.transparent),
                           ),
                           child: Center(
@@ -173,7 +165,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               'I Lent Money',
                               style: TextStyle(
                                 color: _type == 'lent'
-                                    ? AppColors.neonGreen
+                                    ? AppColors.successGreen
                                     : AppColors.textMuted,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,

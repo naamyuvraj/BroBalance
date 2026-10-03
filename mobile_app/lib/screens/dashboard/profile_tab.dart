@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/user_model.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/add_transaction_modal.dart';
 
 class ProfileTab extends StatelessWidget {
   final UserModel currentUser;
@@ -14,238 +14,354 @@ class ProfileTab extends StatelessWidget {
     required this.onLogout,
   });
 
+  void _openAddTransaction(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => AddTransactionModal(onTransactionAdded: () {}),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final name = currentUser.name ?? currentUser.email.split('@').first;
+    final name = (currentUser.name ?? currentUser.email.split('@').first).toUpperCase();
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
+    return Scaffold(
+      backgroundColor: AppColors.bgPrimary,
+      body: SafeArea(
+        child: Stack(
           children: [
-            const SizedBox(height: 10),
-            // Glowing Avatar Circle
-            Container(
-              height: 96,
-              width: 96,
-              decoration: BoxDecoration(
-                color: AppColors.neonGreen.withOpacity(0.12),
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.neonGreen.withOpacity(0.4), width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.neonGreen.withOpacity(0.3),
-                    blurRadius: 24,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  name[0].toUpperCase(),
-                  style: const TextStyle(
-                    color: AppColors.neonGreen,
-                    fontSize: 42,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Text(
-              name,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              currentUser.email,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.5),
-                fontSize: 14,
-              ),
-            ),
-
-            const SizedBox(height: 28),
-
-            // Profile Info Cards
-            GlassCard(
-              padding: const EdgeInsets.all(20),
-              borderColor: AppColors.neonGreen.withOpacity(0.2),
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 children: [
-                  _buildProfileRow(
-                    icon: Icons.person_outline_rounded,
-                    label: 'FULL NAME',
-                    value: name,
-                  ),
-                  Divider(color: Colors.white.withOpacity(0.08), height: 24),
-                  _buildProfileRow(
-                    icon: Icons.email_outlined,
-                    label: 'EMAIL ADDRESS',
-                    value: currentUser.email,
-                  ),
-                  if (currentUser.mobile != null && currentUser.mobile!.isNotEmpty) ...[
-                    Divider(color: Colors.white.withOpacity(0.08), height: 24),
-                    _buildProfileRow(
-                      icon: Icons.phone_android_rounded,
-                      label: 'MOBILE NUMBER',
-                      value: currentUser.mobile!,
+                  const SizedBox(height: 10),
+
+                  // TOP PROFILE CARD matching Screenshot 2
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(22),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF121212),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.white.withOpacity(0.08)),
                     ),
-                  ],
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // App Version Info Card (Shorebird OTA enabled)
-            GlassCard(
-              padding: const EdgeInsets.all(20),
-              borderColor: Colors.white.withOpacity(0.1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.neonGreen.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.system_update_rounded,
-                          color: AppColors.neonGreen,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'BroBalance Mobile',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                    child: Column(
+                      children: [
+                        // Avatar Circle with Green Checkmark Badge
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              height: 84,
+                              width: 84,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF2A1513),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.actionRed, width: 2),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  name[0],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
+                            Positioned(
+                              top: -2,
+                              left: -2,
+                              child: Container(
+                                height: 26,
+                                width: 26,
+                                decoration: BoxDecoration(
+                                  color: AppColors.successGreen,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: const Color(0xFF121212), width: 2),
+                                ),
+                                child: const Icon(
+                                  Icons.check_rounded,
+                                  color: Colors.black,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.0,
                           ),
-                          SizedBox(height: 2),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Member since April 2026',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.45),
+                            fontSize: 13,
+                          ),
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        // Friends Pill Badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.04),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.white.withOpacity(0.08)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.people_outline_rounded,
+                                  color: AppColors.actionRed, size: 16),
+                              const SizedBox(width: 6),
+                              Text(
+                                '1 friends',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Progress Bar Section: PROFILE COMPLETION 100%
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'PROFILE COMPLETION',
+                              style: TextStyle(
+                                color: Colors.white54,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            const Text(
+                              '100%',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: LinearProgressIndicator(
+                            value: 1.0,
+                            minHeight: 6,
+                            backgroundColor: Colors.white.withOpacity(0.08),
+                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.actionRed),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // PERSONAL INFORMATION CARD matching Screenshot 2
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF121212),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.white.withOpacity(0.08)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Personal Information',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.edit_outlined,
+                                    color: Colors.white.withOpacity(0.5), size: 16),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'Edit',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.5),
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        _buildInfoField('USERNAME', name),
+                        _buildInfoField('EMAIL', currentUser.email),
+                        _buildInfoField(
+                          'MOBILE',
+                          currentUser.mobile != null && currentUser.mobile!.isNotEmpty
+                              ? currentUser.mobile!
+                              : 'Not provided',
+                        ),
+                        _buildInfoField('INSTAGRAM', 'naam.yuvraj'),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ACCOUNT CARD matching Screenshot 2
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF121212),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.white.withOpacity(0.08)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Account',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInfoField('LOGIN METHOD', 'Email & Password'),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Sign Out Button
+                  GestureDetector(
+                    onTap: () async {
+                      await AuthService.logout();
+                      onLogout();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.actionRed.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(color: AppColors.actionRed.withOpacity(0.35)),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout_rounded, color: AppColors.actionRed, size: 20),
+                          SizedBox(width: 8),
                           Text(
-                            'Live OTA Code Push Enabled',
+                            'Sign Out',
                             style: TextStyle(
-                              color: AppColors.neonGreen,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
+                              color: AppColors.actionRed,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white.withOpacity(0.1)),
-                    ),
-                    child: const Text(
-                      'v1.0.0+1',
-                      style: TextStyle(color: AppColors.textPrimary, fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
 
-            const SizedBox(height: 28),
-
-            // Sign Out Button
-            GestureDetector(
-              onTap: () async {
-                await AuthService.logout();
-                onLogout();
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: AppColors.actionRed.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: AppColors.actionRed.withOpacity(0.35)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.actionRed.withOpacity(0.15),
-                      blurRadius: 16,
-                    ),
-                  ],
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.logout_rounded, color: AppColors.actionRed, size: 20),
-                    SizedBox(width: 8),
-                    Text(
-                      'Sign Out',
-                      style: TextStyle(
-                        color: AppColors.actionRed,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+            // Coral Red Floating Action Button (+) on Bottom Right matching Screenshot 2
+            Positioned(
+              right: 20,
+              bottom: 24,
+              child: GestureDetector(
+                onTap: () => _openAddTransaction(context),
+                child: Container(
+                  height: 56,
+                  width: 56,
+                  decoration: BoxDecoration(
+                    color: AppColors.actionRed,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.actionRed.withOpacity(0.5),
+                        blurRadius: 20,
+                        spreadRadius: 2,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.add_rounded,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      children: [
-        Icon(icon, color: AppColors.neonGreen, size: 20),
-        const SizedBox(width: 14),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.4),
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
-              ),
+  Widget _buildInfoField(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.4),
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
             ),
-            const SizedBox(height: 3),
-            Text(
-              value,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
             ),
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(height: 10),
+          Divider(color: Colors.white.withOpacity(0.06), height: 1),
+        ],
+      ),
     );
   }
 }
-

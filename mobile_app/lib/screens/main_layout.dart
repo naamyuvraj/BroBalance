@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '../theme/app_theme.dart';
+import '../widgets/add_friend_modal.dart';
 import '../widgets/app_background.dart';
 import 'auth/login_screen.dart';
 import 'dashboard/dashboard_tab.dart';
@@ -21,12 +22,32 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
+  void _openFindPeopleModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const AddFriendModal(),
+    );
+  }
+
+  void _switchTab(int index) {
+    if (index == 4) {
+      // 5th tab is Search / Find People modal
+      _openFindPeopleModal();
+    } else {
+      setState(() => _currentIndex = index);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> tabs = [
-      DashboardTab(currentUser: widget.currentUser),
-      const FriendsTab(),
-      TransactionsTab(currentUser: widget.currentUser),
+      DashboardTab(
+        currentUser: widget.currentUser,
+        onNavigateToFriends: () => setState(() => _currentIndex = 3),
+        onNavigateToTransactions: () => setState(() => _currentIndex = 2),
+      ),
       ProfileTab(
         currentUser: widget.currentUser,
         onLogout: () {
@@ -36,6 +57,8 @@ class _MainLayoutState extends State<MainLayout> {
           );
         },
       ),
+      TransactionsTab(currentUser: widget.currentUser),
+      const FriendsTab(),
     ];
 
     return Scaffold(
@@ -43,54 +66,50 @@ class _MainLayoutState extends State<MainLayout> {
       body: AppBackground(
         child: Stack(
           children: [
-            // Active Tab View with padding at bottom for floating pill
+            // Active Tab Content
             Padding(
-              padding: const EdgeInsets.only(bottom: 74),
+              padding: const EdgeInsets.only(bottom: 70),
               child: IndexedStack(
                 index: _currentIndex,
                 children: tabs,
               ),
             ),
 
-            // Floating Capsule Glass Navigation Bar
+            // Floating 5-Tab Glass Navigation Bar
             Positioned(
-              left: 20,
-              right: 20,
-              bottom: 16,
+              left: 24,
+              right: 24,
+              bottom: 18,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(36),
+                borderRadius: BorderRadius.circular(40),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                   child: Container(
-                    height: 64,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    height: 62,
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xE60A120D),
-                      borderRadius: BorderRadius.circular(36),
+                      color: const Color(0xE6101010),
+                      borderRadius: BorderRadius.circular(40),
                       border: Border.all(
-                        color: AppColors.neonGreen.withOpacity(0.2),
+                        color: Colors.white.withOpacity(0.08),
                         width: 1,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.6),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
-                        ),
-                        BoxShadow(
-                          color: AppColors.neonGreen.withOpacity(0.08),
-                          blurRadius: 16,
-                          spreadRadius: 1,
                         ),
                       ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildNavItem(0, Icons.grid_view_rounded, 'Overview'),
-                        _buildNavItem(1, Icons.people_alt_rounded, 'Friends'),
-                        _buildNavItem(2, Icons.swap_horiz_rounded, 'Expenses'),
-                        _buildNavItem(3, Icons.person_rounded, 'Profile'),
+                        _buildNavItem(0, Icons.home_outlined, Icons.home_rounded),
+                        _buildNavItem(1, Icons.person_outline_rounded, Icons.person_rounded),
+                        _buildNavItem(2, Icons.swap_horiz_rounded, Icons.swap_horiz_rounded),
+                        _buildNavItem(3, Icons.people_outline_rounded, Icons.people_rounded),
+                        _buildNavItem(4, Icons.search_rounded, Icons.search_rounded),
                       ],
                     ),
                   ),
@@ -103,55 +122,36 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(int index, IconData outlineIcon, IconData filledIcon) {
     final isSelected = _currentIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
+      onTap: () => _switchTab(index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        width: 44,
+        height: 44,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.neonGreen.withOpacity(0.16) : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: isSelected ? AppColors.neonGreen.withOpacity(0.35) : Colors.transparent,
-            width: 1,
-          ),
+          color: isSelected ? AppColors.actionRed : Colors.transparent,
+          shape: BoxShape.circle,
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.neonGreen.withOpacity(0.2),
-                    blurRadius: 12,
+                    color: AppColors.actionRed.withOpacity(0.4),
+                    blurRadius: 14,
+                    spreadRadius: 1,
                   ),
                 ]
               : null,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppColors.neonGreen : AppColors.textMuted,
-              size: 20,
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: AppColors.neonGreen,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.2,
-                ),
-              ),
-            ],
-          ],
+        child: Center(
+          child: Icon(
+            isSelected ? filledIcon : outlineIcon,
+            color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),
+            size: isSelected ? 22 : 20,
+          ),
         ),
       ),
     );
   }
 }
-

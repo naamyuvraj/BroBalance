@@ -8,54 +8,16 @@ class AppBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF040A07),
+      color: const Color(0xFF070707),
       child: Stack(
         children: [
-          // Top Left Green Glow Mesh
+          // Top Left Subtle Red Ambient Glow
           Positioned(
-            top: -120,
+            top: -80,
             left: -80,
             child: Container(
               width: 320,
               height: 320,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    const Color(0xFF00FF66).withOpacity(0.18),
-                    const Color(0xFF10B981).withOpacity(0.08),
-                    Colors.transparent,
-                  ],
-                  stops: const [0.0, 0.5, 1.0],
-                ),
-              ),
-            ),
-          ),
-          // Center Right Ambient Glow
-          Positioned(
-            top: 250,
-            right: -100,
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    const Color(0xFF00E65B).withOpacity(0.10),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Bottom Left Red Glow Mesh
-          Positioned(
-            bottom: -80,
-            left: -60,
-            child: Container(
-              width: 280,
-              height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
@@ -67,7 +29,6 @@ class AppBackground extends StatelessWidget {
               ),
             ),
           ),
-          // Foreground Content
           child,
         ],
       ),
