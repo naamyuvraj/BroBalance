@@ -11,6 +11,10 @@ const TransactionService = require('../modules/transaction/transaction.service')
 const router = Router();
 
 
+router.get('/health', (req: any, res: any) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
 router.use('/notification', notificationRoutes);
