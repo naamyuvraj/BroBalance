@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../models/transaction_model.dart';
 import '../../models/user_model.dart';
@@ -7,6 +8,7 @@ import '../../services/transaction_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/add_friend_modal.dart';
 import '../../widgets/add_transaction_modal.dart';
+import '../../widgets/coin_stack_widget.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/grid_pattern.dart';
 import '../../widgets/notification_drawer.dart';
@@ -110,23 +112,23 @@ class _DashboardTabState extends State<DashboardTab> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
                           text: 'Bro',
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans(
                             color: Colors.white,
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             letterSpacing: -0.5,
                           ),
                         ),
                         TextSpan(
                           text: 'Balance',
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans(
                             color: AppColors.actionRed,
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             letterSpacing: -0.5,
                           ),
                         ),
@@ -186,14 +188,13 @@ class _DashboardTabState extends State<DashboardTab> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
-                              text: const TextSpan(
-                                style: TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
+                              text: TextSpan(
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w800,
                                   height: 1.12,
-                                  fontFamily: 'Inter',
                                 ),
-                                children: [
+                                children: const [
                                   TextSpan(
                                     text: 'Clarity ',
                                     style: TextStyle(color: AppColors.actionRed),
@@ -220,15 +221,11 @@ class _DashboardTabState extends State<DashboardTab> {
                           ],
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         flex: 4,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Image.asset(
-                            'assets/images/coins.png',
-                            fit: BoxFit.contain,
-                            height: 150,
-                          ),
+                          padding: EdgeInsets.only(top: 10),
+                          child: ThreeDCoinStackWidget(height: 155),
                         ),
                       ),
                     ],
@@ -503,15 +500,15 @@ class _DashboardTabState extends State<DashboardTab> {
                       Row(
                         children: [
                           Container(
-                            height: 34,
-                            width: 34,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.06),
+                            height: 36,
+                            width: 36,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF2E1715),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.attach_money_rounded,
-                              color: Colors.white70,
+                              color: AppColors.actionRed,
                               size: 20,
                             ),
                           ),

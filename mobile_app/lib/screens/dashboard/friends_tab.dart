@@ -328,7 +328,7 @@ class _FriendsTabState extends State<FriendsTab> {
             // Red Floating Action Button (+) matching Screenshot 4
             Positioned(
               right: 20,
-              bottom: 24,
+              bottom: 12,
               child: GestureDetector(
                 onTap: _openAddTransaction,
                 child: Container(

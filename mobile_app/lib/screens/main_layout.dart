@@ -42,6 +42,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     final List<Widget> tabs = [
       DashboardTab(
         currentUser: widget.currentUser,
@@ -67,36 +68,38 @@ class _MainLayoutState extends State<MainLayout> {
         child: Stack(
           children: [
             // Active Tab Content
-            Padding(
-              padding: const EdgeInsets.only(bottom: 70),
-              child: IndexedStack(
-                index: _currentIndex,
-                children: tabs,
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 74 + bottomPadding),
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: tabs,
+                ),
               ),
             ),
 
-            // Floating 5-Tab Glass Navigation Bar
+            // Floating 5-Tab Glass Navigation Bar matching target reference screenshot
             Positioned(
-              left: 24,
-              right: 24,
-              bottom: 18,
+              left: 20,
+              right: 20,
+              bottom: 12 + bottomPadding,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                   child: Container(
-                    height: 62,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xE6101010),
+                      color: const Color(0xF0101010),
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.08),
+                        color: Colors.white.withValues(alpha: 0.1),
                         width: 1,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withValues(alpha: 0.7),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -128,7 +131,7 @@ class _MainLayoutState extends State<MainLayout> {
       onTap: () => _switchTab(index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 180),
         width: 44,
         height: 44,
         decoration: BoxDecoration(
@@ -137,7 +140,7 @@ class _MainLayoutState extends State<MainLayout> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.actionRed.withOpacity(0.4),
+                    color: AppColors.actionRed.withValues(alpha: 0.45),
                     blurRadius: 14,
                     spreadRadius: 1,
                   ),
@@ -147,7 +150,7 @@ class _MainLayoutState extends State<MainLayout> {
         child: Center(
           child: Icon(
             isSelected ? filledIcon : outlineIcon,
-            color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),
+            color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.55),
             size: isSelected ? 22 : 20,
           ),
         ),

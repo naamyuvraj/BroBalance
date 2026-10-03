@@ -303,7 +303,7 @@ class ProfileTab extends StatelessWidget {
             // Coral Red Floating Action Button (+) on Bottom Right matching Screenshot 2
             Positioned(
               right: 20,
-              bottom: 24,
+              bottom: 12,
               child: GestureDetector(
                 onTap: () => _openAddTransaction(context),
                 child: Container(

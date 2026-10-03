@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../models/transaction_model.dart';
 import '../../models/user_model.dart';
@@ -244,13 +245,13 @@ class _TransactionsTabState extends State<TransactionsTab> {
                               Container(
                                 height: 36,
                                 width: 36,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.06),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF331B19),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
                                   Icons.attach_money_rounded,
-                                  color: Colors.white70,
+                                  color: AppColors.actionRed,
                                   size: 18,
                                 ),
                               ),
@@ -418,7 +419,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
             // Red Floating Action Button (+) matching Screenshot 3
             Positioned(
               right: 20,
-              bottom: 24,
+              bottom: 12,
               child: GestureDetector(
                 onTap: _openAddTransaction,
                 child: Container(
