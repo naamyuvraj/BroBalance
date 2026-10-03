@@ -24,18 +24,19 @@ class ProfileTab extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            // Avatar Circle
+            // Glowing Avatar Circle
             Container(
-              height: 90,
-              width: 90,
+              height: 96,
+              width: 96,
               decoration: BoxDecoration(
-                color: AppColors.actionRed.withOpacity(0.15),
+                color: AppColors.neonGreen.withOpacity(0.12),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.actionRed.withOpacity(0.4), width: 2),
+                border: Border.all(color: AppColors.neonGreen.withOpacity(0.4), width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.actionRed.withOpacity(0.3),
-                    blurRadius: 20,
+                    color: AppColors.neonGreen.withOpacity(0.3),
+                    blurRadius: 24,
+                    spreadRadius: 2,
                   ),
                 ],
               ),
@@ -43,8 +44,8 @@ class ProfileTab extends StatelessWidget {
                 child: Text(
                   name[0].toUpperCase(),
                   style: const TextStyle(
-                    color: AppColors.actionRed,
-                    fontSize: 38,
+                    color: AppColors.neonGreen,
+                    fontSize: 42,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -56,42 +57,44 @@ class ProfileTab extends StatelessWidget {
               name,
               style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
+                letterSpacing: -0.5,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               currentUser.email,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.5),
                 fontSize: 14,
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
 
             // Profile Info Cards
             GlassCard(
               padding: const EdgeInsets.all(20),
+              borderColor: AppColors.neonGreen.withOpacity(0.2),
               child: Column(
                 children: [
                   _buildProfileRow(
-                    icon: Icons.person_outline,
-                    label: 'Full Name',
+                    icon: Icons.person_outline_rounded,
+                    label: 'FULL NAME',
                     value: name,
                   ),
-                  const Divider(color: Color(0xFF262626), height: 24),
+                  Divider(color: Colors.white.withOpacity(0.08), height: 24),
                   _buildProfileRow(
                     icon: Icons.email_outlined,
-                    label: 'Email',
+                    label: 'EMAIL ADDRESS',
                     value: currentUser.email,
                   ),
                   if (currentUser.mobile != null && currentUser.mobile!.isNotEmpty) ...[
-                    const Divider(color: Color(0xFF262626), height: 24),
+                    Divider(color: Colors.white.withOpacity(0.08), height: 24),
                     _buildProfileRow(
-                      icon: Icons.phone_android_outlined,
-                      label: 'Mobile',
+                      icon: Icons.phone_android_rounded,
+                      label: 'MOBILE NUMBER',
                       value: currentUser.mobile!,
                     ),
                   ],
@@ -99,37 +102,73 @@ class ProfileTab extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
-            // App Version Info Card
+            // App Version Info Card (Shorebird OTA enabled)
             GlassCard(
               padding: const EdgeInsets.all(20),
-              child: const Row(
+              borderColor: Colors.white.withOpacity(0.1),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.info_outline, color: AppColors.textMuted, size: 20),
-                      SizedBox(width: 12),
-                      Text(
-                        'BroBalance Mobile',
-                        style: TextStyle(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.neonGreen.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.system_update_rounded,
+                          color: AppColors.neonGreen,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'BroBalance Mobile',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Live OTA Code Push Enabled',
+                            style: TextStyle(
+                              color: AppColors.neonGreen,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Text(
-                    'v1.0.0 (Flutter)',
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white.withOpacity(0.1)),
+                    ),
+                    child: const Text(
+                      'v1.0.0+1',
+                      style: TextStyle(color: AppColors.textPrimary, fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
 
-            // Logout Button
+            // Sign Out Button
             GestureDetector(
               onTap: () async {
                 await AuthService.logout();
@@ -140,13 +179,19 @@ class ProfileTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
                   color: AppColors.actionRed.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.actionRed.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(color: AppColors.actionRed.withOpacity(0.35)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.actionRed.withOpacity(0.15),
+                      blurRadius: 16,
+                    ),
+                  ],
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.logout, color: AppColors.actionRed, size: 20),
+                    Icon(Icons.logout_rounded, color: AppColors.actionRed, size: 20),
                     SizedBox(width: 8),
                     Text(
                       'Sign Out',
@@ -174,16 +219,21 @@ class ProfileTab extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.textMuted, size: 20),
+        Icon(icon, color: AppColors.neonGreen, size: 20),
         const SizedBox(width: 14),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               label,
-              style: const TextStyle(color: AppColors.textMuted, fontSize: 11),
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.4),
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.0,
+              ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 3),
             Text(
               value,
               style: const TextStyle(
@@ -198,3 +248,4 @@ class ProfileTab extends StatelessWidget {
     );
   }
 }
+

@@ -88,7 +88,7 @@ class _DashboardTabState extends State<DashboardTab> {
     final displayName = widget.currentUser.name ?? widget.currentUser.email.split('@').first;
 
     return RefreshIndicator(
-      color: AppColors.actionRed,
+      color: AppColors.neonGreen,
       backgroundColor: AppColors.bgCard,
       onRefresh: _loadDashboardData,
       child: SafeArea(
@@ -98,83 +98,222 @@ class _DashboardTabState extends State<DashboardTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
+              // Top Brand Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        'Welcome back,',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
-                          fontSize: 13,
+                      Container(
+                        height: 38,
+                        width: 38,
+                        decoration: BoxDecoration(
+                          color: AppColors.neonGreen.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.neonGreen.withOpacity(0.3),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.neonGreen.withOpacity(0.2),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.auto_awesome_rounded,
+                            color: AppColors.neonGreen,
+                            size: 20,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        displayName,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(width: 10),
+                      RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Bro',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Balance',
+                              style: TextStyle(
+                                color: AppColors.neonGreen,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.5,
+                                shadows: [
+                                  Shadow(
+                                    color: Color(0x6600FF66),
+                                    blurRadius: 12,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: _openNotifications,
-                    child: Container(
-                      height: 44,
-                      width: 44,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.04),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white.withOpacity(0.08)),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const Icon(Icons.notifications_outlined,
-                              color: AppColors.textPrimary, size: 22),
-                          if (_unreadNotifications > 0)
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: Container(
-                                height: 9,
-                                width: 9,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.actionRed,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: _openNotifications,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.04),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.1),
                             ),
-                        ],
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              const Icon(
+                                Icons.notifications_outlined,
+                                color: AppColors.textPrimary,
+                                size: 20,
+                              ),
+                              if (_unreadNotifications > 0)
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: Container(
+                                    height: 8,
+                                    width: 8,
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.actionRed,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
-              // Financial Cards Grid
+              // Greeting Subtext
+              Text(
+                'Welcome back, $displayName 👋',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.6),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 16),
+
               if (_isLoading)
                 const SizedBox(
-                  height: 140,
+                  height: 160,
                   child: Center(
-                    child: CircularProgressIndicator(color: AppColors.actionRed),
+                    child: CircularProgressIndicator(color: AppColors.neonGreen),
                   ),
                 )
               else ...[
+                // NET BALANCE HERO CARD
+                GlassCard(
+                  gradient: (_stats?.netBalance ?? 0) >= 0
+                      ? AppColors.greenCardGradient
+                      : AppColors.redCardGradient,
+                  borderColor: (_stats?.netBalance ?? 0) >= 0
+                      ? AppColors.neonGreen.withOpacity(0.35)
+                      : AppColors.actionRed.withOpacity(0.35),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: ((_stats?.netBalance ?? 0) >= 0
+                                          ? AppColors.neonGreen
+                                          : AppColors.actionRed)
+                                      .withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  'NET BALANCE',
+                                  style: TextStyle(
+                                    color: (_stats?.netBalance ?? 0) >= 0
+                                        ? AppColors.neonGreen
+                                        : AppColors.actionRed,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            (_stats?.netBalance ?? 0) >= 0
+                                ? Icons.trending_up_rounded
+                                : Icons.trending_down_rounded,
+                            color: (_stats?.netBalance ?? 0) >= 0
+                                ? AppColors.neonGreen
+                                : AppColors.actionRed,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        '${(_stats?.netBalance ?? 0) >= 0 ? '+' : ''}${currencyFormatter.format(_stats?.netBalance ?? 0)}',
+                        style: TextStyle(
+                          color: (_stats?.netBalance ?? 0) >= 0
+                              ? AppColors.neonGreen
+                              : AppColors.actionRed,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        (_stats?.netBalance ?? 0) >= 0
+                            ? "You're in the green! All clear."
+                            : "You owe more than you're owed.",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+
+                // SIDE-BY-SIDE CARDS: TO RECEIVE & TO PAY
                 Row(
                   children: [
-                    // YOU OWE (Red Card)
+                    // TO RECEIVE CARD (Green)
                     Expanded(
                       child: GlassCard(
-                        gradient: AppColors.redCardGradient,
-                        borderColor: AppColors.actionRed.withOpacity(0.25),
+                        gradient: AppColors.greenCardGradient,
+                        borderColor: AppColors.neonGreen.withOpacity(0.25),
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -182,16 +321,88 @@ class _DashboardTabState extends State<DashboardTab> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'YOU OWE',
+                                  'TO RECEIVE',
+                                  style: TextStyle(
+                                    color: AppColors.neonGreen,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.neonGreen.withOpacity(0.15),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.arrow_downward_rounded,
+                                    color: AppColors.neonGreen,
+                                    size: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              currencyFormatter.format(_stats?.toReceive ?? 0),
+                              style: const TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.neonGreen,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'incoming',
+                                  style: TextStyle(
+                                    color: AppColors.neonGreen,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+
+                    // TO PAY CARD (Red)
+                    Expanded(
+                      child: GlassCard(
+                        gradient: AppColors.redCardGradient,
+                        borderColor: AppColors.actionRed.withOpacity(0.25),
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'TO PAY',
                                   style: TextStyle(
                                     color: AppColors.actionRed,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.2,
+                                    letterSpacing: 1.0,
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.all(4),
+                                  padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                     color: AppColors.actionRed.withOpacity(0.15),
                                     shape: BoxShape.circle,
@@ -213,54 +424,27 @@ class _DashboardTabState extends State<DashboardTab> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-
-                    // YOU'RE OWED (Green Card)
-                    Expanded(
-                      child: GlassCard(
-                        gradient: AppColors.greenCardGradient,
-                        borderColor: AppColors.success.withOpacity(0.25),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                            const SizedBox(height: 4),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  "YOU'RE OWED",
-                                  style: TextStyle(
-                                    color: AppColors.success,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
                                 Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.success.withOpacity(0.15),
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.actionRed,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
-                                    Icons.arrow_downward_rounded,
-                                    color: AppColors.success,
-                                    size: 14,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'outgoing',
+                                  style: TextStyle(
+                                    color: AppColors.actionRed,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              currencyFormatter.format(_stats?.toReceive ?? 0),
-                              style: const TextStyle(
-                                color: AppColors.textPrimary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
                             ),
                           ],
                         ),
@@ -268,39 +452,11 @@ class _DashboardTabState extends State<DashboardTab> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-
-                // NET BALANCE BAR
-                GlassCard(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Net Balance',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        currencyFormatter.format(_stats?.netBalance ?? 0),
-                        style: TextStyle(
-                          color: (_stats?.netBalance ?? 0) >= 0
-                              ? AppColors.success
-                              : AppColors.actionRed,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
 
               const SizedBox(height: 24),
 
-              // Quick Actions Bar
+              // QUICK ACTION CAPSULE PILLS BAR
               Row(
                 children: [
                   Expanded(
@@ -309,18 +465,25 @@ class _DashboardTabState extends State<DashboardTab> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          gradient: AppColors.primaryGradient,
-                          borderRadius: BorderRadius.circular(16),
+                          gradient: AppColors.greenPrimaryGradient,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.neonGreen.withOpacity(0.3),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add, color: Colors.white, size: 18),
+                            Icon(Icons.add_rounded, color: Colors.black, size: 20),
                             SizedBox(width: 6),
                             Text(
                               'Record Expense',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -334,15 +497,15 @@ class _DashboardTabState extends State<DashboardTab> {
                   GestureDetector(
                     onTap: _openAddFriend,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white.withOpacity(0.1)),
+                        color: Colors.white.withOpacity(0.06),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.white.withOpacity(0.12)),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.person_add_outlined,
+                          Icon(Icons.person_add_alt_1_rounded,
                               color: AppColors.textPrimary, size: 18),
                           SizedBox(width: 6),
                           Text(
@@ -362,22 +525,34 @@ class _DashboardTabState extends State<DashboardTab> {
 
               const SizedBox(height: 28),
 
-              // Recent Activity Section
-              const Text(
-                'Recent Activity',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              // RECENT ACTIVITY SECTION
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Recent Activity',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Showing 5 recent',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.4),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
 
               if (_recentTransactions.isEmpty)
                 GlassCard(
                   child: const Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.symmetric(vertical: 24),
                       child: Text(
                         'No transactions recorded yet.\nTap "Record Expense" to get started!',
                         textAlign: TextAlign.center,
@@ -399,18 +574,31 @@ class _DashboardTabState extends State<DashboardTab> {
 
                     return GlassCard(
                       padding: const EdgeInsets.all(14),
+                      borderColor: isLender
+                          ? AppColors.neonGreen.withOpacity(0.15)
+                          : AppColors.actionRed.withOpacity(0.15),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: isLender
-                                ? AppColors.success.withOpacity(0.15)
-                                : AppColors.actionRed.withOpacity(0.15),
+                          Container(
+                            height: 42,
+                            width: 42,
+                            decoration: BoxDecoration(
+                              color: isLender
+                                  ? AppColors.neonGreen.withOpacity(0.12)
+                                  : AppColors.actionRed.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: isLender
+                                    ? AppColors.neonGreen.withOpacity(0.25)
+                                    : AppColors.actionRed.withOpacity(0.25),
+                              ),
+                            ),
                             child: Icon(
                               isLender
                                   ? Icons.arrow_downward_rounded
                                   : Icons.arrow_upward_rounded,
-                              color: isLender ? AppColors.success : AppColors.actionRed,
-                              size: 18,
+                              color: isLender ? AppColors.neonGreen : AppColors.actionRed,
+                              size: 20,
                             ),
                           ),
                           const SizedBox(width: 14),
@@ -426,13 +614,13 @@ class _DashboardTabState extends State<DashboardTab> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
+                                const SizedBox(height: 3),
                                 Text(
                                   isLender
-                                      ? 'You lent ${otherUser.name ?? otherUser.email}'
-                                      : 'You borrowed from ${otherUser.name ?? otherUser.email}',
-                                  style: const TextStyle(
-                                    color: AppColors.textSecondary,
+                                      ? 'Lent to ${otherUser.name ?? otherUser.email.split('@').first}'
+                                      : 'Borrowed from ${otherUser.name ?? otherUser.email.split('@').first}',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.5),
                                     fontSize: 12,
                                   ),
                                 ),
@@ -445,29 +633,35 @@ class _DashboardTabState extends State<DashboardTab> {
                               Text(
                                 '${isLender ? '+' : '-'}${currencyFormatter.format(item.amount)}',
                                 style: TextStyle(
-                                  color: isLender ? AppColors.success : AppColors.actionRed,
+                                  color: isLender ? AppColors.neonGreen : AppColors.actionRed,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 4),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 2),
+                                    horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
                                   color: item.status == 'paid'
-                                      ? AppColors.success.withOpacity(0.2)
-                                      : Colors.white.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(6),
+                                      ? AppColors.neonGreen.withOpacity(0.18)
+                                      : Colors.white.withOpacity(0.06),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: item.status == 'paid'
+                                        ? AppColors.neonGreen.withOpacity(0.3)
+                                        : Colors.transparent,
+                                  ),
                                 ),
                                 child: Text(
-                                  item.status.toUpperCase(),
+                                  item.status == 'paid' ? 'SETTLED' : 'ACTIVE',
                                   style: TextStyle(
                                     color: item.status == 'paid'
-                                        ? AppColors.success
+                                        ? AppColors.neonGreen
                                         : AppColors.textMuted,
                                     fontSize: 9,
                                     fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.5,
                                   ),
                                 ),
                               ),
@@ -485,4 +679,5 @@ class _DashboardTabState extends State<DashboardTab> {
       ),
     );
   }
+
 }

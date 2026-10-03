@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 
 class GlassCard extends StatelessWidget {
   final Widget child;
@@ -10,16 +9,18 @@ class GlassCard extends StatelessWidget {
   final Color? borderColor;
   final Gradient? gradient;
   final VoidCallback? onTap;
+  final Color? backgroundColor;
 
   const GlassCard({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(16),
     this.margin = EdgeInsets.zero,
-    this.borderRadius = 20,
+    this.borderRadius = 22,
     this.borderColor,
     this.gradient,
     this.onTap,
+    this.backgroundColor,
   });
 
   @override
@@ -29,22 +30,24 @@ class GlassCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
           child: Container(
             padding: padding,
             decoration: BoxDecoration(
               gradient: gradient,
-              color: gradient == null ? const Color(0xB30E0E0E) : null,
+              color: gradient == null
+                  ? (backgroundColor ?? const Color(0xE60D1510))
+                  : null,
               borderRadius: BorderRadius.circular(borderRadius),
               border: Border.all(
-                color: borderColor ?? Colors.white.withOpacity(0.06),
+                color: borderColor ?? Colors.white.withOpacity(0.08),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  color: Colors.black.withOpacity(0.4),
+                  blurRadius: 20,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
@@ -57,9 +60,11 @@ class GlassCard extends StatelessWidget {
     if (onTap != null) {
       return GestureDetector(
         onTap: onTap,
+        behavior: HitTestBehavior.opaque,
         child: card,
       );
     }
     return card;
   }
 }
+

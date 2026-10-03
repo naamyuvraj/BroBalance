@@ -92,6 +92,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
   final currencyFormatter = NumberFormat.currency(symbol: '₹', decimalDigits: 2);
 
   @override
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
@@ -103,58 +104,97 @@ class _TransactionsTabState extends State<TransactionsTab> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Transactions',
+                  'Expenses',
                   style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 24,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: -0.5,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add_circle, color: AppColors.actionRed, size: 28),
-                  onPressed: _openAddTransaction,
+                GestureDetector(
+                  onTap: _openAddTransaction,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.greenPrimaryGradient,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.neonGreen.withOpacity(0.3),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.add_rounded, color: Colors.black, size: 18),
+                        SizedBox(width: 4),
+                        Text(
+                          'New',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
 
-          // Search Bar
+          // Glass Search Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
               controller: _searchController,
               onChanged: (_) => _applyFilters(),
-              style: const TextStyle(color: AppColors.textPrimary),
+              style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
               decoration: InputDecoration(
-                hintText: 'Search transactions...',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
-                prefixIcon: const Icon(Icons.search, color: AppColors.textMuted),
+                hintText: 'Search description or friend...',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.35), fontSize: 13),
+                prefixIcon: const Icon(Icons.search_rounded, color: AppColors.neonGreen, size: 20),
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.04),
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(color: Colors.white.withOpacity(0.08)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: AppColors.neonGreen.withOpacity(0.4)),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
 
-          // Filter Chips
+          // Segmented Capsule Filter Pills Bar
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                _buildFilterChip('All', 'all'),
-                const SizedBox(width: 8),
-                _buildFilterChip('I Lent', 'lent'),
-                const SizedBox(width: 8),
-                _buildFilterChip('I Borrowed', 'borrowed'),
-                const SizedBox(width: 8),
-                _buildFilterChip('Settled', 'paid'),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.04),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: Colors.white.withOpacity(0.08)),
+              ),
+              child: Row(
+                children: [
+                  _buildFilterChip('All', 'all'),
+                  const SizedBox(width: 4),
+                  _buildFilterChip('Lent', 'lent'),
+                  const SizedBox(width: 4),
+                  _buildFilterChip('Borrowed', 'borrowed'),
+                  const SizedBox(width: 4),
+                  _buildFilterChip('Settled', 'paid'),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -163,7 +203,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
           Expanded(
             child: _isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: AppColors.actionRed))
+                    child: CircularProgressIndicator(color: AppColors.neonGreen))
                 : _filteredTransactions.isEmpty
                     ? const Center(
                         child: Text(
@@ -182,21 +222,35 @@ class _TransactionsTabState extends State<TransactionsTab> {
 
                           return GlassCard(
                             padding: const EdgeInsets.all(16),
+                            borderColor: isLender
+                                ? AppColors.neonGreen.withOpacity(0.18)
+                                : AppColors.actionRed.withOpacity(0.18),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundColor: isLender
-                                          ? AppColors.success.withOpacity(0.15)
-                                          : AppColors.actionRed.withOpacity(0.15),
+                                    Container(
+                                      height: 42,
+                                      width: 42,
+                                      decoration: BoxDecoration(
+                                        color: isLender
+                                            ? AppColors.neonGreen.withOpacity(0.12)
+                                            : AppColors.actionRed.withOpacity(0.12),
+                                        borderRadius: BorderRadius.circular(14),
+                                        border: Border.all(
+                                          color: isLender
+                                              ? AppColors.neonGreen.withOpacity(0.3)
+                                              : AppColors.actionRed.withOpacity(0.3),
+                                        ),
+                                      ),
                                       child: Icon(
                                         isLender
                                             ? Icons.arrow_downward_rounded
                                             : Icons.arrow_upward_rounded,
                                         color: isLender
-                                            ? AppColors.success
+                                            ? AppColors.neonGreen
                                             : AppColors.actionRed,
+                                        size: 20,
                                       ),
                                     ),
                                     const SizedBox(width: 14),
@@ -212,13 +266,13 @@ class _TransactionsTabState extends State<TransactionsTab> {
                                               fontSize: 15,
                                             ),
                                           ),
-                                          const SizedBox(height: 2),
+                                          const SizedBox(height: 3),
                                           Text(
                                             isLender
-                                                ? 'With ${otherUser.name ?? otherUser.email}'
-                                                : 'From ${otherUser.name ?? otherUser.email}',
-                                            style: const TextStyle(
-                                              color: AppColors.textSecondary,
+                                                ? 'Lent to ${otherUser.name ?? otherUser.email.split('@').first}'
+                                                : 'Borrowed from ${otherUser.name ?? otherUser.email.split('@').first}',
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(0.5),
                                               fontSize: 12,
                                             ),
                                           ),
@@ -232,7 +286,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
                                           '${isLender ? '+' : '-'}${currencyFormatter.format(item.amount)}',
                                           style: TextStyle(
                                             color: isLender
-                                                ? AppColors.success
+                                                ? AppColors.neonGreen
                                                 : AppColors.actionRed,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
@@ -241,21 +295,27 @@ class _TransactionsTabState extends State<TransactionsTab> {
                                         const SizedBox(height: 4),
                                         Container(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 2),
+                                              horizontal: 8, vertical: 3),
                                           decoration: BoxDecoration(
                                             color: item.status == 'paid'
-                                                ? AppColors.success.withOpacity(0.2)
-                                                : AppColors.warning.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(6),
+                                                ? AppColors.neonGreen.withOpacity(0.18)
+                                                : Colors.white.withOpacity(0.06),
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: item.status == 'paid'
+                                                  ? AppColors.neonGreen.withOpacity(0.3)
+                                                  : Colors.transparent,
+                                            ),
                                           ),
                                           child: Text(
-                                            item.status.toUpperCase(),
+                                            item.status == 'paid' ? 'SETTLED' : 'ACTIVE',
                                             style: TextStyle(
                                               color: item.status == 'paid'
-                                                  ? AppColors.success
-                                                  : AppColors.warning,
+                                                  ? AppColors.neonGreen
+                                                  : AppColors.textMuted,
                                               fontSize: 9,
                                               fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.5,
                                             ),
                                           ),
                                         ),
@@ -265,16 +325,37 @@ class _TransactionsTabState extends State<TransactionsTab> {
                                 ),
                                 if (item.status != 'paid') ...[
                                   const SizedBox(height: 12),
-                                  const Divider(color: Color(0xFF262626), height: 1),
+                                  Divider(color: Colors.white.withOpacity(0.08), height: 1),
                                   const SizedBox(height: 8),
                                   Align(
                                     alignment: Alignment.centerRight,
-                                    child: TextButton(
-                                      onPressed: () => _markPaid(item.id),
-                                      child: const Text(
-                                        'Mark as Paid',
-                                        style: TextStyle(
-                                            color: AppColors.success, fontSize: 12),
+                                    child: GestureDetector(
+                                      onTap: () => _markPaid(item.id),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.neonGreen.withOpacity(0.15),
+                                          borderRadius: BorderRadius.circular(14),
+                                          border: Border.all(
+                                              color: AppColors.neonGreen.withOpacity(0.3)),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.check_circle_outline_rounded,
+                                                color: AppColors.neonGreen, size: 14),
+                                            SizedBox(width: 4),
+                                            Text(
+                                              'Settle Up',
+                                              style: TextStyle(
+                                                color: AppColors.neonGreen,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -299,21 +380,22 @@ class _TransactionsTabState extends State<TransactionsTab> {
           _applyFilters();
         });
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.actionRed.withOpacity(0.2)
-              : Colors.white.withOpacity(0.04),
+              ? AppColors.neonGreen.withOpacity(0.18)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.actionRed : Colors.white.withOpacity(0.08),
+            color: isSelected ? AppColors.neonGreen.withOpacity(0.35) : Colors.transparent,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? AppColors.actionRed : AppColors.textMuted,
+            color: isSelected ? AppColors.neonGreen : AppColors.textMuted,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
@@ -322,3 +404,4 @@ class _TransactionsTabState extends State<TransactionsTab> {
     );
   }
 }
+

@@ -7,6 +7,8 @@ class PrimaryButton extends StatelessWidget {
   final bool isLoading;
   final IconData? icon;
   final double? width;
+  final Gradient? gradient;
+  final Color? textColor;
 
   const PrimaryButton({
     super.key,
@@ -15,20 +17,25 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.icon,
     this.width,
+    this.gradient,
+    this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final effectiveGradient = gradient ?? AppColors.greenPrimaryGradient;
+    final effectiveTextColor = textColor ?? Colors.black;
+
     return Container(
       width: width ?? double.infinity,
-      height: 50,
+      height: 52,
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
+        gradient: effectiveGradient,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: AppColors.actionRed.withOpacity(0.4),
-            blurRadius: 16,
+            color: AppColors.neonGreen.withOpacity(0.35),
+            blurRadius: 18,
             offset: const Offset(0, 4),
           ),
         ],
@@ -40,11 +47,11 @@ class PrimaryButton extends StatelessWidget {
           onTap: isLoading ? null : onPressed,
           child: Center(
             child: isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 22,
                     width: 22,
                     child: CircularProgressIndicator(
-                      color: Colors.white,
+                      color: effectiveTextColor,
                       strokeWidth: 2.5,
                     ),
                   )
@@ -52,15 +59,15 @@ class PrimaryButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (icon != null) ...[
-                        Icon(icon, color: Colors.white, size: 18),
+                        Icon(icon, color: effectiveTextColor, size: 20),
                         const SizedBox(width: 8),
                       ],
                       Text(
                         text,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                        style: TextStyle(
+                          color: effectiveTextColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                           letterSpacing: 0.2,
                         ),
                       ),
@@ -72,3 +79,4 @@ class PrimaryButton extends StatelessWidget {
     );
   }
 }
+

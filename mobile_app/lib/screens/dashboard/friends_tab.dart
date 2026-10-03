@@ -90,34 +90,65 @@ class _FriendsTabState extends State<FriendsTab>
                   'Friends',
                   style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 24,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: -0.5,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.person_add, color: AppColors.actionRed),
-                  onPressed: _openAddFriend,
+                GestureDetector(
+                  onTap: _openAddFriend,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.greenPrimaryGradient,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.neonGreen.withOpacity(0.3),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.person_add_alt_1_rounded,
+                            color: Colors.black, size: 18),
+                        SizedBox(width: 6),
+                        Text(
+                          'Add',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
 
-          // Custom Tab Bar
+          // Custom Capsule Tab Bar
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.04),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
             ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: AppColors.actionRed,
+              indicatorColor: Colors.transparent,
+              dividerColor: Colors.transparent,
               indicator: BoxDecoration(
-                color: AppColors.actionRed.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.actionRed.withOpacity(0.4)),
+                color: AppColors.neonGreen.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.neonGreen.withOpacity(0.35)),
               ),
-              labelColor: AppColors.actionRed,
+              labelColor: AppColors.neonGreen,
               unselectedLabelColor: AppColors.textMuted,
               labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
               tabs: [
@@ -133,7 +164,7 @@ class _FriendsTabState extends State<FriendsTab>
           Expanded(
             child: _isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: AppColors.actionRed))
+                    child: CircularProgressIndicator(color: AppColors.neonGreen))
                 : TabBarView(
                     controller: _tabController,
                     children: [
@@ -141,7 +172,7 @@ class _FriendsTabState extends State<FriendsTab>
                       _friends.isEmpty
                           ? const Center(
                               child: Text(
-                                'No friends yet. Tap + to add friends!',
+                                'No friends yet. Tap + Add to connect!',
                                 style: TextStyle(color: AppColors.textMuted),
                               ),
                             )
@@ -151,17 +182,41 @@ class _FriendsTabState extends State<FriendsTab>
                               separatorBuilder: (_, __) => const SizedBox(height: 10),
                               itemBuilder: (context, index) {
                                 final f = _friends[index];
+                                final initial = (f.user.name ?? f.user.email)[0].toUpperCase();
+                                final isGreen = f.balance >= 0;
+
                                 return GlassCard(
+                                  borderColor: f.balance > 0
+                                      ? AppColors.neonGreen.withOpacity(0.2)
+                                      : f.balance < 0
+                                          ? AppColors.actionRed.withOpacity(0.2)
+                                          : Colors.white.withOpacity(0.08),
                                   child: Row(
                                     children: [
-                                      CircleAvatar(
-                                        backgroundColor:
-                                            AppColors.actionRed.withOpacity(0.15),
-                                        child: Text(
-                                          (f.user.name ?? f.user.email)[0].toUpperCase(),
-                                          style: const TextStyle(
-                                            color: AppColors.actionRed,
-                                            fontWeight: FontWeight.bold,
+                                      Container(
+                                        height: 44,
+                                        width: 44,
+                                        decoration: BoxDecoration(
+                                          color: isGreen
+                                              ? AppColors.neonGreen.withOpacity(0.15)
+                                              : AppColors.actionRed.withOpacity(0.15),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: isGreen
+                                                ? AppColors.neonGreen.withOpacity(0.3)
+                                                : AppColors.actionRed.withOpacity(0.3),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            initial,
+                                            style: TextStyle(
+                                              color: isGreen
+                                                  ? AppColors.neonGreen
+                                                  : AppColors.actionRed,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -171,7 +226,7 @@ class _FriendsTabState extends State<FriendsTab>
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              f.user.name ?? f.user.email,
+                                              f.user.name ?? f.user.email.split('@').first,
                                               style: const TextStyle(
                                                 color: AppColors.textPrimary,
                                                 fontWeight: FontWeight.bold,
@@ -181,8 +236,8 @@ class _FriendsTabState extends State<FriendsTab>
                                             const SizedBox(height: 2),
                                             Text(
                                               f.user.email,
-                                              style: const TextStyle(
-                                                color: AppColors.textMuted,
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(0.4),
                                                 fontSize: 12,
                                               ),
                                             ),
@@ -200,7 +255,7 @@ class _FriendsTabState extends State<FriendsTab>
                                                     : 'You owe',
                                             style: TextStyle(
                                               color: f.balance > 0
-                                                  ? AppColors.success
+                                                  ? AppColors.neonGreen
                                                   : f.balance < 0
                                                       ? AppColors.actionRed
                                                       : AppColors.textMuted,
@@ -213,7 +268,7 @@ class _FriendsTabState extends State<FriendsTab>
                                             currencyFormatter.format(f.balance.abs()),
                                             style: TextStyle(
                                               color: f.balance > 0
-                                                  ? AppColors.success
+                                                  ? AppColors.neonGreen
                                                   : f.balance < 0
                                                       ? AppColors.actionRed
                                                       : AppColors.textPrimary,

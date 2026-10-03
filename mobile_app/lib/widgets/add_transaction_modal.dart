@@ -92,12 +92,20 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         left: 24,
         right: 24,
       ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF141414),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        border: Border(
-          top: BorderSide(color: Color(0xFF262626), width: 1),
+      decoration: BoxDecoration(
+        color: const Color(0xFF09120C),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+        border: Border.all(
+          color: AppColors.neonGreen.withOpacity(0.25),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.6),
+            blurRadius: 32,
+            offset: const Offset(0, -8),
+          ),
+        ],
       ),
       child: SingleChildScrollView(
         child: Form(
@@ -106,20 +114,21 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
+              // Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Record Transaction',
+                    'Record Expense',
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.textMuted),
+                    icon: const Icon(Icons.close_rounded, color: AppColors.textMuted),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -134,12 +143,13 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 const SizedBox(height: 12),
               ],
 
-              // Type Selector (Lent vs Borrowed)
+              // Capsule Pill Type Selector (Lent vs Borrowed)
               Container(
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.04),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white.withOpacity(0.06)),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.white.withOpacity(0.08)),
                 ),
                 child: Row(
                   children: [
@@ -147,26 +157,26 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       child: GestureDetector(
                         onTap: () => setState(() => _type = 'lent'),
                         child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 180),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
                             color: _type == 'lent'
-                                ? AppColors.actionRed.withOpacity(0.2)
+                                ? AppColors.neonGreen.withOpacity(0.18)
                                 : Colors.transparent,
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(20),
                             border: _type == 'lent'
-                                ? Border.all(color: AppColors.actionRed)
-                                : null,
+                                ? Border.all(color: AppColors.neonGreen.withOpacity(0.4))
+                                : Border.all(color: Colors.transparent),
                           ),
                           child: Center(
                             child: Text(
                               'I Lent Money',
                               style: TextStyle(
                                 color: _type == 'lent'
-                                    ? AppColors.actionRed
+                                    ? AppColors.neonGreen
                                     : AppColors.textMuted,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ),
@@ -177,26 +187,26 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       child: GestureDetector(
                         onTap: () => setState(() => _type = 'borrowed'),
                         child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 180),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
                             color: _type == 'borrowed'
-                                ? AppColors.success.withOpacity(0.2)
+                                ? AppColors.actionRed.withOpacity(0.18)
                                 : Colors.transparent,
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(20),
                             border: _type == 'borrowed'
-                                ? Border.all(color: AppColors.success)
-                                : null,
+                                ? Border.all(color: AppColors.actionRed.withOpacity(0.4))
+                                : Border.all(color: Colors.transparent),
                           ),
                           child: Center(
                             child: Text(
                               'I Borrowed',
                               style: TextStyle(
                                 color: _type == 'borrowed'
-                                    ? AppColors.success
+                                    ? AppColors.actionRed
                                     : AppColors.textMuted,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ),
