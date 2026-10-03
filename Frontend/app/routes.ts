@@ -12,5 +12,7 @@ export default [
     route("dashboard/profile", "routes/dashboard.profile.tsx"),
     route("dashboard/transactions", "routes/dashboard.transactions.tsx"),
     route("dashboard/friends", "routes/dashboard.friends.tsx"),
+    route("dashboard/trips", "routes/dashboard.trips.tsx"),
+    route("dashboard/trips/:tripId", "routes/dashboard.trip-detail.tsx"),
   ]),
 ] satisfies RouteConfig;
