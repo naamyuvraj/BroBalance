@@ -6,110 +6,144 @@ class ThreeDCoinStackWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      'assets/images/coins.png',
+    return SizedBox(
       height: height,
-      fit: BoxFit.contain,
-      errorBuilder: (context, error, stackTrace) {
-        return Image.network(
-          'https://raw.githubusercontent.com/naamyuvraj/BroBalance/main/mobile_app/assets/images/coins.png',
-          height: height,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return SizedBox(
-              height: height,
-              width: height * 0.9,
-              child: CustomPaint(
-                painter: _CoinStackPainter(),
+      width: height * 1.0,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // 3D Metallic Gold Glow Background
+          Positioned(
+            bottom: 10,
+            child: Container(
+              height: 40,
+              width: height * 0.8,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFFFC107).withValues(alpha: 0.35),
+                    blurRadius: 30,
+                    spreadRadius: 10,
+                  ),
+                ],
               ),
-            );
-          },
-        );
-      },
+            ),
+          ),
+          // Custom 3D Metallic Gold Coin Stack
+          CustomPaint(
+            size: Size(height * 1.0, height),
+            painter: _VibrantCoinStackPainter(),
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _CoinStackPainter extends CustomPainter {
+class _VibrantCoinStackPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    // Draw stack of 4 3D gold coins
-    final coinHeight = h * 0.18;
-    final coinWidth = w * 0.85;
+    // 5 stacked 3D gold coins with offset 3D depth
+    final coinWidth = w * 0.82;
+    final coinHeight = h * 0.22;
+    final depth = 12.0;
 
-    final coinPositions = [
-      Offset(w * 0.5, h * 0.75),
-      Offset(w * 0.5, h * 0.58),
-      Offset(w * 0.5, h * 0.41),
-      Offset(w * 0.5, h * 0.24),
+    final coins = [
+      Offset(w * 0.50, h * 0.76),
+      Offset(w * 0.52, h * 0.62),
+      Offset(w * 0.48, h * 0.48),
+      Offset(w * 0.51, h * 0.34),
+      Offset(w * 0.49, h * 0.20),
     ];
 
-    for (int i = 0; i < coinPositions.length; i++) {
-      final pos = coinPositions[i];
-      final rect = Rect.fromCenter(
-        center: pos,
-        width: coinWidth - (i * 4),
+    for (int i = 0; i < coins.length; i++) {
+      final center = coins[i];
+      final rectTop = Rect.fromCenter(
+        center: center,
+        width: coinWidth - (i * 2),
         height: coinHeight,
       );
 
-      // Shadow
-      final shadowPaint = Paint()
-        ..color = Colors.black.withValues(alpha: 0.4)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-      canvas.drawOval(rect.shift(const Offset(0, 6)), shadowPaint);
-
-      // Coin Side (3D depth)
-      final sideRect = Rect.fromCenter(
-        center: pos + const Offset(0, 5),
-        width: coinWidth - (i * 4),
-        height: coinHeight,
+      // Bottom shadow
+      final shadowPath = Path()..addOval(rectTop.shift(Offset(0, depth + 4)));
+      canvas.drawPath(
+        shadowPath,
+        Paint()
+          ..color = const Color(0x77000000)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
       );
+
+      // 3D Cylindrical Side Extrusion
+      final sidePath = Path();
+      sidePath.moveTo(rectTop.left, center.dy);
+      sidePath.arcTo(rectTop, 3.14159, -3.14159, false);
+      sidePath.lineTo(rectTop.right, center.dy + depth);
+      final rectBottom = rectTop.shift(Offset(0, depth));
+      sidePath.arcTo(rectBottom, 0, 3.14159, false);
+      sidePath.lineTo(rectTop.left, center.dy);
+
       final sideGradient = const LinearGradient(
         colors: [
-          Color(0xFFB8860B),
+          Color(0xFF8B6508),
           Color(0xFFDAA520),
           Color(0xFFFFD700),
-          Color(0xFFB8860B),
+          Color(0xFFFFF8DC),
+          Color(0xFFDAA520),
+          Color(0xFF8B6508),
         ],
+        stops: [0.0, 0.2, 0.45, 0.6, 0.8, 1.0],
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
       );
-      final sidePaint = Paint()..shader = sideGradient.createShader(sideRect);
-      canvas.drawOval(sideRect, sidePaint);
-
-      // Coin Top
-      final topGradient = const RadialGradient(
-        colors: [
-          Color(0xFFFFF8DC),
-          Color(0xFFFFD700),
-          Color(0xFFDAA520),
-          Color(0xFFB8860B),
-        ],
-        center: Alignment.topLeft,
-        radius: 1.2,
+      canvas.drawPath(
+        sidePath,
+        Paint()..shader = sideGradient.createShader(rectBottom),
       );
-      final topPaint = Paint()..shader = topGradient.createShader(rect);
-      canvas.drawOval(rect, topPaint);
 
-      // Inner Coin Rim
-      final rimRect = rect.deflate(5);
-      final rimPaint = Paint()
-        ..color = const Color(0xFF8B6508)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-      canvas.drawOval(rimRect, rimPaint);
+      // Coin Top Face (Glossy Metallic Gold)
+      final topGradient = const LinearGradient(
+        colors: [
+          Color(0xFFFFF9E6),
+          Color(0xFFFFDF00),
+          Color(0xFFD4AF37),
+          Color(0xFFA67C00),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+      canvas.drawOval(
+        rectTop,
+        Paint()..shader = topGradient.createShader(rectTop),
+      );
 
-      // Currency Emblem
+      // Inner Coin Rim Highlight
+      final rimRect = rectTop.deflate(4.5);
+      canvas.drawOval(
+        rimRect,
+        Paint()
+          ..color = const Color(0xFFB8860B)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.0,
+      );
+
+      // Coin Center Emblem ($ / ₹)
       final textPainter = TextPainter(
-        text: const TextSpan(
-          text: '₹',
+        text: TextSpan(
+          text: i % 2 == 0 ? '₹' : '\$',
           style: TextStyle(
-            color: Color(0xFF7A5901),
-            fontSize: 18,
+            color: const Color(0xFF7A5901),
+            fontSize: 16 - (i * 0.5),
             fontWeight: FontWeight.w900,
+            shadows: const [
+              Shadow(
+                color: Color(0x66FFFFFF),
+                offset: Offset(0.5, 0.5),
+              ),
+            ],
           ),
         ),
         textDirection: TextDirection.ltr,
@@ -117,7 +151,7 @@ class _CoinStackPainter extends CustomPainter {
       textPainter.layout();
       textPainter.paint(
         canvas,
-        pos - Offset(textPainter.width / 2, textPainter.height / 2 + 2),
+        center - Offset(textPainter.width / 2, textPainter.height / 2 + 1),
       );
     }
   }

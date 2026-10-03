@@ -82,26 +82,26 @@ class _MainLayoutState extends State<MainLayout> {
             Positioned(
               left: 20,
               right: 20,
-              bottom: 12 + bottomPadding,
+              bottom: (bottomPadding > 0 ? bottomPadding : 16.0) + 4,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                   child: Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    height: 62,
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xF0101010),
+                      color: const Color(0xF5121212),
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.1),
-                        width: 1,
+                        color: const Color(0x26FFFFFF),
+                        width: 1.2,
                       ),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.7),
+                          color: Color(0xB3000000),
                           blurRadius: 24,
-                          offset: const Offset(0, 8),
+                          offset: Offset(0, 8),
                         ),
                       ],
                     ),
@@ -135,12 +135,12 @@ class _MainLayoutState extends State<MainLayout> {
         width: 44,
         height: 44,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.actionRed : Colors.transparent,
+          color: isSelected ? const Color(0xFFF0655B) : Colors.transparent,
           shape: BoxShape.circle,
           boxShadow: isSelected
-              ? [
+              ? const [
                   BoxShadow(
-                    color: AppColors.actionRed.withValues(alpha: 0.45),
+                    color: Color(0x73F0655B),
                     blurRadius: 14,
                     spreadRadius: 1,
                   ),
@@ -150,8 +150,8 @@ class _MainLayoutState extends State<MainLayout> {
         child: Center(
           child: Icon(
             isSelected ? filledIcon : outlineIcon,
-            color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.55),
-            size: isSelected ? 22 : 20,
+            color: isSelected ? Colors.white : const Color(0x99FFFFFF),
+            size: isSelected ? 22 : 21,
           ),
         ),
       ),
